@@ -113,9 +113,9 @@
                     <a href="#" data-url="https://higorgandra.github.io/guarderiabeiramar" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
                 </div>
 
-                <!-- Projeto Vídeo (CORRIGIDO) -->
+                <!-- Projeto Vídeo -->
                 <div class="project-item text-left border border-color p-6 rounded-lg">
-                    <h3 class="text-xl font-bold mb-2">Barion Drift Salvador | Event Film</h3>
+                    <h3 class="text-xl font-bold mb-2">Barion Drift Salvador</h3>
                     <p class="text-gray-400 mb-4 text-sm">Show de drift e adrenalina no Barion Drift Bahia.</p>
                     <div class="flex flex-wrap gap-2 text-xs mb-6">
                         <span class="bg-gray-800 px-2 py-1 rounded-full">Videomaker</span>
@@ -128,12 +128,12 @@
                         <span class="bg-gray-800 px-2 py-1 rounded-full">Automobilismo</span>
                         <span class="bg-gray-800 px-2 py-1 rounded-full">ProducaoDeVideo</span>
                     </div>
-                    <a href="#" data-url="https://www.pexels.com/pt-br/download/video/26083309/?fps=59.94&h=1920&w=1080.mp4" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Assistir Vídeo ↗</a>
+                    <a href="#" data-url="#" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Assistir Vídeo ↗</a>
                 </div>
 
                 <!-- Projeto Ferramenta de Otimização -->
                 <div class="project-item text-left border border-color p-6 rounded-lg">
-                    <h3 class="text-xl font-bold mb-2">Ferramenta de Otimização</h3>
+                    <h3 class="text-xl font-bold mb-2">flmR - Bot Yourself</h3>
                     <p class="text-gray-400 mb-4 text-sm">Ferramenta de otimização 100% indetectável.</p>
                     <div class="flex flex-wrap gap-2 text-xs mb-6">
                         <span class="bg-gray-800 px-2 py-1 rounded-full">HTML5</span>
@@ -170,9 +170,9 @@
              </button>
         </div>
         <div class="relative w-full flex-grow flex items-center justify-center">
-            <!-- Indicador de Carregamento -->
-            <div id="loading-indicator" class="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-20">
-                <p class="text-gray-400 text-lg animate-pulse">Carregando...</p>
+            <!-- Indicador de Status -->
+            <div id="status-indicator" class="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-20">
+                <p id="modal-status-text" class="text-gray-400 text-lg text-center leading-relaxed">Carregando...</p>
             </div>
             <!-- Iframe para sites -->
             <iframe id="project-iframe" class="w-full h-full border-0 opacity-0 transition-opacity duration-300 absolute inset-0" src="" allowfullscreen style="display: none;"></iframe>
@@ -248,52 +248,76 @@
             const modal = document.getElementById('project-modal');
             const iframe = document.getElementById('project-iframe');
             const videoElement = document.getElementById('project-video');
-            const loadingIndicator = document.getElementById('loading-indicator');
+            const statusIndicator = document.getElementById('status-indicator');
+            const modalStatusText = document.getElementById('modal-status-text');
             const closeModalBtn = document.getElementById('close-modal-btn');
             const modalTriggers = document.querySelectorAll('[data-modal-trigger]');
+            let countdownInterval;
 
             modalTriggers.forEach(trigger => {
                 trigger.addEventListener('click', (event) => {
                     event.preventDefault();
                     
-                    loadingIndicator.classList.remove('hidden'); // Sempre mostra o carregando no início
-                    iframe.classList.add('opacity-0');
-                    videoElement.classList.add('opacity-0');
-                    
+                    statusIndicator.classList.remove('hidden');
+                    iframe.style.display = 'none';
+                    videoElement.style.display = 'none';
+
                     const url = trigger.getAttribute('data-url');
-                    const isVideo = url.includes('.mp4');
                     
-                    if (isVideo) {
-                        iframe.style.display = 'none';
-                        videoElement.style.display = 'block';
-                        videoElement.setAttribute('src', url);
-                        videoElement.load(); // Garante que o navegador tente carregar o vídeo
+                    if (url === '#') {
+                        modalStatusText.innerHTML = 'Em construção...<br><span class="text-sm">Fechando em (<span id="countdown-timer">5</span>)</span>';
+                        modalStatusText.classList.remove('animate-pulse');
                         
-                        videoElement.onloadeddata = () => {
-                            loadingIndicator.classList.add('hidden');
-                            videoElement.classList.remove('opacity-0');
-                            videoElement.play();
-                        };
-                        videoElement.onerror = () => {
-                            console.error("Erro ao carregar o vídeo.");
-                            loadingIndicator.classList.add('hidden');
-                            // Adicionar aqui uma mensagem de erro ao usuário se desejar
-                        };
+                        let count = 5;
+                        
+                        countdownInterval = setInterval(() => {
+                            count--;
+                            const countdownTimerElement = document.getElementById('countdown-timer');
+                            if (countdownTimerElement) {
+                                countdownTimerElement.textContent = count;
+                            }
+                            if (count <= 0) {
+                                clearInterval(countdownInterval);
+                                closeModalBtn.click();
+                            }
+                        }, 1000);
 
                     } else {
-                        videoElement.style.display = 'none';
-                        iframe.style.display = 'block';
-                        iframe.setAttribute('src', url);
+                        modalStatusText.textContent = 'Carregando...';
+                        modalStatusText.classList.add('animate-pulse');
                         
-                        iframe.onload = () => {
-                            loadingIndicator.classList.add('hidden');
-                            iframe.classList.remove('opacity-0');
-                        };
-                        iframe.onerror = () => {
-                            console.error("Erro ao carregar o iframe.");
-                            loadingIndicator.classList.add('hidden');
-                            // Adicionar aqui uma mensagem de erro ao usuário se desejar
-                        };
+                        iframe.classList.add('opacity-0');
+                        videoElement.classList.add('opacity-0');
+                        
+                        const isVideo = url.endsWith('.mp4');
+
+                        if (isVideo) {
+                            videoElement.style.display = 'block';
+                            videoElement.setAttribute('src', url);
+                            videoElement.load();
+                            
+                            videoElement.onloadeddata = () => {
+                                statusIndicator.classList.add('hidden');
+                                videoElement.classList.remove('opacity-0');
+                                videoElement.play();
+                            };
+                            videoElement.onerror = () => {
+                                modalStatusText.textContent = 'Erro ao carregar o vídeo.';
+                                modalStatusText.classList.remove('animate-pulse');
+                            };
+                        } else {
+                            iframe.style.display = 'block';
+                            iframe.setAttribute('src', url);
+                            
+                            iframe.onload = () => {
+                                statusIndicator.classList.add('hidden');
+                                iframe.classList.remove('opacity-0');
+                            };
+                            iframe.onerror = () => {
+                                modalStatusText.textContent = 'Erro ao carregar o conteúdo.';
+                                modalStatusText.classList.remove('animate-pulse');
+                            };
+                        }
                     }
                     
                     modal.classList.remove('hidden');
@@ -304,17 +328,18 @@
             
             if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', () => {
+                    clearInterval(countdownInterval); // Limpa a contagem regressiva se o modal for fechado manualmente
+                    
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
                     
-                    iframe.setAttribute('src', ''); // Limpa o src do iframe
-                    videoElement.pause(); // Pausa o vídeo
-                    videoElement.setAttribute('src', ''); // Limpa o src do vídeo
+                    iframe.setAttribute('src', '');
+                    videoElement.pause();
+                    videoElement.setAttribute('src', '');
                     
                     document.body.classList.remove('modal-open');
                     
-                    // Reseta os estados visuais
-                    loadingIndicator.classList.remove('hidden');
+                    statusIndicator.classList.remove('hidden');
                     iframe.classList.add('opacity-0');
                     videoElement.classList.add('opacity-0');
                     iframe.style.display = 'none';
