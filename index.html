@@ -3,228 +3,402 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gandra Terapias - Saúde Integrativa e Bem-estar</title>
+    <title>Seu Nome | A Missão Criativa</title>
+    
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- GSAP (Animação) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <!-- Three.js (Fundo 3D) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    
+    <!-- Tone.js (Áudio) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.js"></script>
+
     <style>
+        /* Estilos personalizados para complementar o Tailwind */
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Inter', sans-serif;
+            background-color: #000010;
+            color: #E0E0E0;
+            overflow-x: hidden;
         }
-        .hero-bg {
-            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url('https://placehold.co/1920x1080/a7c4a0/ffffff?text=Clínica+Acolhedora');
-            background-size: cover;
-            background-position: center;
+        
+        #three-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+            width: 100vw;
+            height: 100vh;
         }
-        .section-title {
-            position: relative;
-            padding-bottom: 10px;
-            margin-bottom: 20px;
+
+        .font-spacemono {
+            font-family: 'Space Mono', monospace;
         }
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 3px;
-            background-color: #38a169; /* green-600 */
+
+        .hud-border {
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            box-shadow: 0 0 10px rgba(0, 255, 255, 0.2), inset 0 0 5px rgba(0, 255, 255, 0.1);
+            transition: all 0.3s ease;
         }
+
+        .hud-border:hover {
+             border-color: rgba(0, 255, 255, 0.8);
+             box-shadow: 0 0 20px rgba(0, 255, 255, 0.5), inset 0 0 10px rgba(0, 255, 255, 0.3);
+        }
+        
+        .cinematic-border {
+            border: 1px solid rgba(255, 165, 0, 0.3);
+            box-shadow: 0 0 10px rgba(255, 165, 0, 0.2), inset 0 0 5px rgba(255, 165, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .cinematic-border:hover {
+            border-color: rgba(255, 165, 0, 0.8);
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.5), inset 0 0 10px rgba(255, 165, 0, 0.3);
+        }
+
+        .text-glow-cyan {
+            text-shadow: 0 0 8px rgba(0, 255, 255, 0.7);
+        }
+
+        .text-glow-orange {
+            text-shadow: 0 0 8px rgba(255, 165, 0, 0.7);
+        }
+        
+        .glass-effect {
+            background: rgba(10, 10, 25, 0.5);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+        }
+        
+        /* Oculta a barra de rolagem mas mantém a funcionalidade */
+        body::-webkit-scrollbar { display: none; }
+        body { -ms-overflow-style: none; scrollbar-width: none; }
     </style>
 </head>
-<body class="bg-gray-50 text-gray-800">
+<body class="w-full min-h-screen">
 
-    <!-- CABEÇALHO E NAVEGAÇÃO -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="#" class="text-2xl font-bold text-green-700">Gandra Terapias</a>
-            <div class="hidden md:flex items-center space-x-6">
-                <a href="#sobre" class="text-gray-600 hover:text-green-700 transition-colors">Sobre Nós</a>
-                <a href="#tratamentos" class="text-gray-600 hover:text-green-700 transition-colors">Tratamentos</a>
-                <a href="#equipe" class="text-gray-600 hover:text-green-700 transition-colors">Nossa Equipe</a>
-                <a href="#blog" class="text-gray-600 hover:text-green-700 transition-colors">Blog</a>
-                <a href="#contato" class="text-gray-600 hover:text-green-700 transition-colors">Contato</a>
-            </div>
-            <a href="#agendamento" class="hidden md:block bg-green-600 text-white px-5 py-2 rounded-full hover:bg-green-700 transition-all transform hover:scale-105">
-                Agende sua Consulta
-            </a>
-            <!-- Menu Mobile -->
-            <div class="md:hidden">
-                <button id="mobile-menu-button" class="text-gray-700 focus:outline-none">
-                    <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path></svg>
+    <!-- Fundo 3D -->
+    <canvas id="three-canvas"></canvas>
+
+    <!-- Conteúdo Principal -->
+    <main id="app-container" class="relative z-10">
+
+        <!-- Seção 1: Plataforma de Lançamento (Inicial) -->
+        <section id="launchpad" class="h-screen w-full flex flex-col justify-center items-center fixed top-0 left-0">
+            <div class="text-center">
+                <h1 id="main-title" class="text-3xl md:text-5xl lg:text-6xl font-black uppercase tracking-widest opacity-0">Missão Criativa</h1>
+                <p id="subtitle" class="text-lg md:text-xl text-cyan-300 mt-2 opacity-0 font-spacemono">Protocolo iniciado.</p>
+                <button id="launch-button" class="mt-12 px-8 py-4 bg-cyan-400 text-black font-bold uppercase rounded-md text-lg tracking-wider transition-all duration-300 hover:bg-white hover:shadow-[0_0_20px_rgba(0,255,255,0.8)] opacity-0 transform scale-50">
+                    Iniciar Missão
                 </button>
             </div>
-        </nav>
-        <!-- Menu Dropdown Mobile -->
-        <div id="mobile-menu" class="hidden md:hidden px-6 pt-2 pb-4 space-y-2">
-            <a href="#sobre" class="block text-gray-600 hover:text-green-700">Sobre Nós</a>
-            <a href="#tratamentos" class="block text-gray-600 hover:text-green-700">Tratamentos</a>
-            <a href="#equipe" class="block text-gray-600 hover:text-green-700">Nossa Equipe</a>
-            <a href="#blog" class="block text-gray-600 hover:text-green-700">Blog</a>
-            <a href="#contato" class="block text-gray-600 hover:text-green-700">Contato</a>
-            <a href="#agendamento" class="block mt-4 bg-green-600 text-white text-center px-5 py-2 rounded-full hover:bg-green-700">Agendar Consulta</a>
+        </section>
+
+        <!-- Seção 2: A Jornada (Controlada por Scroll) -->
+        <div id="journey-wrapper" class="relative w-full invisible" style="height: 250vh;">
+            <div id="journey-content" class="h-screen w-full flex justify-center items-center fixed top-0 left-0">
+                 <div class="text-left w-full max-w-2xl mx-auto px-4 font-spacemono text-lg md:text-xl">
+                    <p class="scan-line opacity-0">> <span class="text-cyan-400">Analisando...</span> Identidade confirmada.</p>
+                    <p class="scan-line opacity-0">> NOME: [SEU NOME AQUI]</p>
+                    <p class="scan-line opacity-0">> FUNÇÃO: Arquiteto Digital & Cineasta de Narrativas</p>
+                    <p class="scan-line opacity-0">> DIRETIVA: Transformar ideias em experiências memoráveis.</p>
+                 </div>
+            </div>
         </div>
-    </header>
+        
+        <!-- Seção 3: A Escolha -->
+        <section id="choice" class="h-screen w-full flex-col justify-center items-center fixed top-0 left-0 hidden opacity-0">
+             <h2 class="text-2xl md:text-4xl font-bold mb-12 text-center">ESCOLHA UMA ORBITA PARA EXPLORAR</h2>
+             <div class="flex flex-col md:flex-row gap-8">
+                <!-- Opção 1: Código -->
+                <div id="explore-code" class="w-72 h-96 p-6 flex flex-col justify-end items-center text-center cursor-pointer rounded-lg glass-effect hud-border">
+                    <h3 class="text-3xl font-black text-glow-cyan">UNIVERSO DO CÓDIGO</h3>
+                    <p class="mt-4 text-cyan-200">Construindo as fundações da web com precisão e inovação.</p>
+                </div>
 
-    <main>
-        <!-- SEÇÃO HERO -->
-        <section class="hero-bg text-white">
-            <div class="container mx-auto px-6 py-32 text-center">
-                <h1 class="text-4xl md:text-6xl font-bold leading-tight mb-4">Cuidando de Você, Restaurando seu Equilíbrio.</h1>
-                <p class="text-lg md:text-xl mb-8 max-w-3xl mx-auto">Terapias manuais e integrativas para uma vida sem dor e com mais qualidade. Encontre o tratamento ideal para suas necessidades.</p>
-                <a href="#agendamento" class="bg-white text-green-700 font-bold px-8 py-4 rounded-full hover:bg-gray-200 transition-all transform hover:scale-105 text-lg">
-                    Quero Agendar Minha Avaliação
-                </a>
-            </div>
+                <!-- Opção 2: Vídeo -->
+                <div id="explore-frames" class="w-72 h-96 p-6 flex flex-col justify-end items-center text-center cursor-pointer rounded-lg glass-effect cinematic-border">
+                    <h3 class="text-3xl font-black text-glow-orange">UNIVERSO DOS FRAMES</h3>
+                    <p class="mt-4 text-orange-200">Criando narrativas visuais que capturam e emocionam.</p>
+                </div>
+             </div>
         </section>
 
-        <!-- SEÇÃO TRATAMENTOS -->
-        <section id="tratamentos" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center section-title">Nossos Tratamentos</h2>
-                <p class="text-center max-w-2xl mx-auto mb-12">Oferecemos uma abordagem completa e personalizada para cuidar da sua saúde e bem-estar.</p>
+        <!-- Seção 4: Universos (Portfólios) -->
+        <div id="universes-container" class="relative min-h-screen w-full hidden opacity-0 px-4 md:px-8 lg:px-16 py-24">
+            
+            <!-- Universo do Código -->
+            <div id="code-universe" class="hidden">
+                 <h2 class="text-4xl md:text-6xl font-black text-glow-cyan mb-12 font-spacemono text-center">// PROJETOS_WEB</h2>
+                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                     <!-- Projeto de Site 1 -->
+                     <div class="project-card glass-effect hud-border rounded-lg p-6" data-type="code" data-title="E-commerce Futurista" data-desc="Plataforma de vendas completa com design arrojado e foco na experiência do usuário." data-tech="React, Node.js, TailwindCSS" data-details="O desafio foi criar um sistema de checkout intuitivo e uma interface responsiva que se adaptasse perfeitamente a qualquer dispositivo. A otimização de performance foi crucial, resultando em um carregamento 30% mais rápido que a média do setor.">
+                        <h3 class="text-2xl font-bold text-cyan-300">E-commerce Futurista</h3>
+                        <p class="mt-2 text-gray-300">Plataforma de vendas completa.</p>
+                     </div>
+                     <!-- Adicione mais projetos de site aqui -->
+                 </div>
+            </div>
+
+            <!-- Universo dos Frames -->
+            <div id="frames-universe" class="hidden">
+                <h2 class="text-4xl md:text-6xl font-black text-glow-orange mb-12 font-spacemono text-center">// PROJETOS_VIDEO</h2>
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                    <!-- Card de Tratamento 1 -->
-                    <div class="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                        <div class="mb-4 inline-block p-4 bg-green-100 rounded-full">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-activity"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Osteopatia</h3>
-                        <p class="text-gray-600">Tratamento que utiliza técnicas manuais para diagnosticar e tratar disfunções, aliviando dores e restaurando a função do corpo.</p>
-                    </div>
-                    <!-- Card de Tratamento 2 -->
-                    <div class="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                         <div class="mb-4 inline-block p-4 bg-green-100 rounded-full">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-users"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Terapia Pediátrica</h3>
-                        <p class="text-gray-600">Cuidado especializado para bebês e crianças, tratando desde cólicas e refluxo até dificuldades motoras e de sono.</p>
-                    </div>
-                    <!-- Card de Tratamento 3 -->
-                    <div class="bg-white rounded-lg shadow-lg p-8 text-center hover:shadow-2xl hover:-translate-y-2 transition-all duration-300">
-                         <div class="mb-4 inline-block p-4 bg-green-100 rounded-full">
-                           <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#38a169" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-heart"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>
-                        </div>
-                        <h3 class="text-xl font-bold mb-2">Saúde da Mulher</h3>
-                        <p class="text-gray-600">Atenção integral à saúde feminina em todas as fases da vida, desde a gestação até o pós-parto e menopausa.</p>
-                    </div>
+                     <!-- Projeto de Vídeo 1 -->
+                     <div class="project-card glass-effect cinematic-border rounded-lg p-6" data-type="video" data-title="Curta-Metragem 'Neon Dreams'" data-desc="Uma história de ficção científica contada através de uma cinematografia vibrante e edição rítmica." data-tech="DaVinci Resolve, After Effects" data-details="O foco principal foi o color grading, buscando uma paleta de cores que remetesse aos clássicos cyberpunk. A edição de som foi desenhada para criar uma atmosfera imersiva, sincronizando cada corte com a trilha sonora original.">
+                        <h3 class="text-2xl font-bold text-orange-200">Curta 'Neon Dreams'</h3>
+                        <p class="mt-2 text-gray-300">Ficção científica com edição rítmica.</p>
+                     </div>
+                     <!-- Adicione mais projetos de vídeo aqui -->
                 </div>
             </div>
-        </section>
-
-        <!-- SEÇÃO SOBRE NÓS -->
-        <section id="sobre" class="bg-white py-20">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row items-center gap-12">
-                    <div class="md:w-1/2">
-                        <img src="https://placehold.co/600x400/a7c4a0/FFFFFF?text=Equipe+Gandra" alt="Equipe Gandra Terapias" class="rounded-lg shadow-xl">
-                    </div>
-                    <div class="md:w-1/2">
-                        <h2 class="text-3xl font-bold section-title text-center md:text-left !items-start after:!left-0 after:!transform-none">Nossa Missão é o seu Bem-Estar</h2>
-                        <p class="mb-4 text-gray-600">Na Gandra Terapias, acreditamos em uma abordagem humanizada e integrativa. Nossa clínica foi fundada com o propósito de oferecer tratamentos que não apenas aliviam sintomas, mas que também promovem uma saúde duradoura e uma melhor qualidade de vida.</p>
-                        <p class="mb-6 text-gray-600">Combinamos conhecimento técnico avançado com um atendimento acolhedor para criar um ambiente de confiança e cuidado, onde cada paciente é único.</p>
-                        <a href="#equipe" class="bg-green-600 text-white px-6 py-3 rounded-full hover:bg-green-700 transition-all transform hover:scale-105">Conheça nossos profissionais</a>
-                    </div>
-                </div>
+            
+            <!-- Botão de Retorno -->
+            <div class="text-center mt-16">
+                 <button id="return-button" class="px-6 py-3 bg-gray-700 text-white font-bold uppercase rounded-md text-sm tracking-wider transition-all duration-300 hover:bg-white hover:text-black">
+                    Retornar à Nave Mãe
+                </button>
             </div>
-        </section>
+        </div>
 
-        <!-- SEÇÃO EQUIPE -->
-        <section id="equipe" class="py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center section-title">Profissionais Dedicados</h2>
-                <p class="text-center max-w-2xl mx-auto mb-12">Nossa equipe é formada por especialistas apaixonados pelo que fazem, em constante atualização para oferecer o melhor tratamento.</p>
-                <div class="flex flex-wrap justify-center gap-8">
-                    <!-- Card Profissional 1 -->
-                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-                        <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                            <img src="https://placehold.co/200x200/cccccc/333333?text=Dr.a+Ana" alt="Foto do Profissional" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-green-200">
-                            <h3 class="text-xl font-bold mb-1">Dr.ª Ana Gandra</h3>
-                            <p class="text-green-700 font-semibold mb-2">Fisioterapeuta Osteopata</p>
-                            <p class="text-sm text-gray-600">Especialista em osteopatia pediátrica e saúde da mulher. Mais de 10 anos de experiência clínica.</p>
-                        </div>
-                    </div>
-                    <!-- Card Profissional 2 -->
-                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-                        <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                            <img src="https://placehold.co/200x200/cccccc/333333?text=Dr.+Carlos" alt="Foto do Profissional" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-green-200">
-                            <h3 class="text-xl font-bold mb-1">Dr. Carlos Souza</h3>
-                            <p class="text-green-700 font-semibold mb-2">Terapeuta Manual</p>
-                            <p class="text-sm text-gray-600">Foco em tratamento de dores crônicas na coluna e terapia para atletas de alto rendimento.</p>
-                        </div>
-                    </div>
-                     <!-- Card Profissional 3 -->
-                    <div class="w-full sm:w-1/2 md:w-1/3 lg:w-1/4">
-                        <div class="bg-white rounded-lg shadow-lg p-6 text-center">
-                            <img src="https://placehold.co/200x200/cccccc/333333?text=Dr.a+Laura" alt="Foto do Profissional" class="w-32 h-32 rounded-full mx-auto mb-4 border-4 border-green-200">
-                            <h3 class="text-xl font-bold mb-1">Dr.ª Laura Mendes</h3>
-                            <p class="text-green-700 font-semibold mb-2">Especialista em Reabilitação</p>
-                            <p class="text-sm text-gray-600">Experiência em reabilitação pós-cirúrgica e lesões ortopédicas complexas.</p>
-                        </div>
-                    </div>
-                </div>
+    </main>
+    
+    <!-- Modal de Projeto -->
+    <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-80 flex justify-center items-center p-4 z-50 hidden opacity-0 transition-opacity duration-300">
+        <div id="modal-content" class="glass-effect rounded-lg p-8 w-full max-w-3xl max-h-[90vh] overflow-y-auto transform scale-90 transition-transform duration-300">
+            <div class="flex justify-between items-start">
+                 <h2 id="modal-title" class="text-3xl font-bold mb-4">Título do Projeto</h2>
+                 <button id="close-modal" class="text-4xl text-white">&times;</button>
             </div>
-        </section>
+            <p id="modal-desc" class="text-lg text-gray-300 mb-4"></p>
+            <p class="font-spacemono mb-1"><span id="modal-tech-label" class="font-bold"></span></p>
+            <p id="modal-tech" class="font-spacemono bg-black bg-opacity-20 px-3 py-2 rounded-md text-sm mb-6"></p>
+            <h4 class="font-bold text-xl mb-2">Relatório da Missão:</h4>
+            <p id="modal-details" class="text-gray-400 leading-relaxed"></p>
+        </div>
+    </div>
 
-         <!-- SEÇÃO BLOG -->
-        <section id="blog" class="bg-green-50 py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center section-title">Central de Conteúdo</h2>
-                <p class="text-center max-w-2xl mx-auto mb-12">Informação de qualidade para você cuidar melhor da sua saúde. Artigos, dicas e novidades do mundo da fisioterapia.</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                    <!-- Post 1 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
-                        <img src="https://placehold.co/600x400/98d1a1/ffffff?text=Dores+nas+Costas" class="w-full h-48 object-cover" alt="Post do Blog">
-                        <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold mb-2">5 exercícios para aliviar a dor nas costas em casa</h3>
-                            <p class="text-gray-600 mb-4 flex-grow">Aprenda movimentos simples e seguros para diminuir o desconforto e melhorar sua postura no dia a dia.</p>
-                            <a href="#" class="text-green-600 font-semibold hover:underline mt-auto">Leia Mais &rarr;</a>
-                        </div>
-                    </div>
-                    <!-- Post 2 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
-                        <img src="https://placehold.co/600x400/a7c4a0/ffffff?text=Sono+do+Bebê" class="w-full h-48 object-cover" alt="Post do Blog">
-                         <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold mb-2">Como a osteopatia pode ajudar seu bebê a dormir melhor</h3>
-                            <p class="text-gray-600 mb-4 flex-grow">Entenda como a terapia manual pode resolver desconfortos que afetam o sono dos pequenos.</p>
-                            <a href="#" class="text-green-600 font-semibold hover:underline mt-auto">Leia Mais &rarr;</a>
-                        </div>
-                    </div>
-                    <!-- Post 3 -->
-                    <div class="bg-white rounded-lg shadow-lg overflow-hidden flex flex-col">
-                        <img src="https://placehold.co/600x400/86b58e/ffffff?text=Prevenção+de+Lesões" class="w-full h-48 object-cover" alt="Post do Blog">
-                         <div class="p-6 flex flex-col flex-grow">
-                            <h3 class="text-xl font-bold mb-2">Prevenção de Lesões: Dicas para corredores amadores</h3>
-                            <p class="text-gray-600 mb-4 flex-grow">Descubra os principais cuidados para evitar lesões comuns e melhorar seu desempenho na corrida.</p>
-                            <a href="#" class="text-green-600 font-semibold hover:underline mt-auto">Leia Mais &rarr;</a>
-                        </div>
-                    </div>
-                </div>
-                <div class="text-center mt-12">
-                     <a href="#" class="bg-green-600 text-white px-8 py-3 rounded-full hover:bg-green-700 transition-all">Ver todos os artigos</a>
-                </div>
-            </div>
-        </section>
 
-        <!-- SEÇÃO CONTATO E AGENDAMENTO -->
-        <section id="contato" class="py-20 bg-white">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold text-center section-title" id="agendamento">Contato e Agendamento</h2>
-                <p class="text-center max-w-2xl mx-auto mb-12">Estamos prontos para te ajudar. Entre em contato pelo formulário, telefone, WhatsApp ou venha nos visitar.</p>
-                <div class="flex flex-col lg:flex-row gap-12">
-                    <!-- Formulário -->
-                    <div class="lg:w-1/2 bg-gray-50 p-8 rounded-lg shadow-md">
-                        <h3 class="text-2xl font-bold mb-6">Envie uma mensagem</h3>
-                        <form>
-                            <div class="mb-4">
-                                <label for="name" class="block text-gray-700 mb-1">Nome</label>
-                                <input type="text" id="name" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="Seu nome completo">
-                            </div>
-                             <div class="mb-4">
-                                <label for="email" class="block text-gray-700 mb-1">E-mail</label>
-                                <input type="email" id="email" class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500" placeholder="seu.email@exemplo.com">
-                            </div>
-                             <div class="mb-4">
-                                <label for="message" class="block text-gray-700 mb-1">Mensagem</...
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+
+        // --- CONFIGURAÇÃO INICIAL ---
+        const body = document.body;
+        const launchpad = document.getElementById('launchpad');
+        const journeyWrapper = document.getElementById('journey-wrapper');
+        const journeyContent = document.getElementById('journey-content');
+        const choiceSection = document.getElementById('choice');
+        const universesContainer = document.getElementById('universes-container');
+        const codeUniverse = document.getElementById('code-universe');
+        const framesUniverse = document.getElementById('frames-universe');
+        
+        const projectModal = document.getElementById('project-modal');
+        const modalContent = document.getElementById('modal-content');
+        
+        // Desabilitar rolagem no início
+        body.style.overflow = 'hidden';
+
+        // --- ÁUDIO SUTIL ---
+        const synth = new Tone.Synth().toDestination();
+        const playClickSound = () => {
+            if (Tone.context.state !== 'running') {
+                Tone.context.resume();
+            }
+            synth.triggerAttackRelease("C2", "8n");
+        };
+        const playLaunchSound = () => {
+            if (Tone.context.state !== 'running') {
+                Tone.context.resume();
+            }
+            const synth = new Tone.PolySynth().toDestination();
+            synth.triggerAttackRelease(["C2", "G2", "C3"], "1n");
+        }
+
+        // --- ANIMAÇÃO DE INTRODUÇÃO ---
+        const tlIntro = gsap.timeline();
+        tlIntro
+            .to("#main-title", { opacity: 1, duration: 1.5, delay: 0.5 })
+            .to("#subtitle", { opacity: 1, duration: 1, stagger: 0.2 }, "-=1")
+            .to("#launch-button", { opacity: 1, scale: 1, duration: 1, ease: "elastic.out(1, 0.5)" }, "-=0.5");
+
+        // --- LANÇAMENTO DA MISSÃO ---
+        document.getElementById('launch-button').addEventListener('click', () => {
+            playLaunchSound();
+            const tlLaunch = gsap.timeline({
+                onComplete: () => {
+                    launchpad.style.display = 'none';
+                    journeyWrapper.classList.remove('invisible');
+                    body.style.overflow = 'auto'; // Habilitar rolagem
+                    setupScrollAnimations();
+                }
+            });
+            tlLaunch
+                .to(launchpad, { opacity: 0, duration: 1, ease: "power2.inOut" });
+        });
+
+        // --- ANIMAÇÕES DE SCROLL ---
+        function setupScrollAnimations() {
+            gsap.timeline({
+                scrollTrigger: {
+                    trigger: journeyWrapper,
+                    start: "top top",
+                    end: "bottom bottom",
+                    scrub: 1,
+                }
+            })
+            .fromTo(journeyContent, { opacity: 0 }, { opacity: 1, duration: 1 })
+            .to(".scan-line", { opacity: 1, stagger: 1, duration: 2 }, "+=0.5")
+            .to(journeyContent, { opacity: 0, duration: 1, onComplete: showChoiceScreen }, "+=2");
+        }
+
+        // --- TELA DE ESCOLHA ---
+        function showChoiceScreen() {
+            body.style.overflow = 'hidden'; // Desabilitar rolagem novamente
+            journeyWrapper.style.display = 'none';
+            choiceSection.style.display = 'flex';
+            gsap.to(choiceSection, { opacity: 1, duration: 1 });
+        }
+
+        // --- SELEÇÃO DE UNIVERSO ---
+        const exploreCode = document.getElementById('explore-code');
+        const exploreFrames = document.getElementById('explore-frames');
+
+        const selectUniverse = (universe) => {
+            playClickSound();
+            const tlSelect = gsap.timeline({
+                onComplete: () => {
+                    choiceSection.style.display = 'none';
+                    universesContainer.style.display = 'block';
+                    if (universe === 'code') {
+                        codeUniverse.style.display = 'block';
+                        framesUniverse.style.display = 'none';
+                    } else {
+                        codeUniverse.style.display = 'none';
+                        framesUniverse.style.display = 'block';
+                    }
+                    gsap.to(universesContainer, { opacity: 1, duration: 1 });
+                    body.style.overflow = 'auto';
+                }
+            });
+            tlSelect.to(choiceSection, { opacity: 0, duration: 0.5 });
+        };
+
+        exploreCode.addEventListener('click', () => selectUniverse('code'));
+        exploreFrames.addEventListener('click', () => selectUniverse('video'));
+
+        // --- RETORNO À NAVE MÃE ---
+        document.getElementById('return-button').addEventListener('click', () => {
+            playClickSound();
+            body.style.overflow = 'hidden';
+            const tlReturn = gsap.timeline({
+                onComplete: () => {
+                    universesContainer.style.display = 'none';
+                    choiceSection.style.display = 'flex';
+                    gsap.to(choiceSection, { opacity: 1, duration: 1 });
+                }
+            });
+            tlReturn.to(universesContainer, { opacity: 0, duration: 0.5 });
+        });
+        
+        // --- MODAL DE PROJETO ---
+        const projectCards = document.querySelectorAll('.project-card');
+        projectCards.forEach(card => {
+            card.addEventListener('click', () => {
+                playClickSound();
+                const data = card.dataset;
+                
+                document.getElementById('modal-title').textContent = data.title;
+                document.getElementById('modal-desc').textContent = data.desc;
+                document.getElementById('modal-tech').textContent = data.tech;
+                document.getElementById('modal-details').textContent = data.details;
+
+                const modalContentDiv = document.getElementById('modal-content');
+                const techLabel = document.getElementById('modal-tech-label');
+                
+                modalContentDiv.classList.remove('hud-border', 'cinematic-border');
+                if(data.type === 'code') {
+                    modalContentDiv.classList.add('hud-border');
+                    techLabel.textContent = 'Stack de Tecnologia:';
+                    techLabel.className = 'font-bold text-cyan-300';
+                } else {
+                    modalContentDiv.classList.add('cinematic-border');
+                    techLabel.textContent = 'Ferramentas Utilizadas:';
+                    techLabel.className = 'font-bold text-orange-200';
+                }
+
+                projectModal.style.display = 'flex';
+                gsap.to(projectModal, { opacity: 1, duration: 0.3 });
+                gsap.to(modalContent, { scale: 1, duration: 0.3, ease: 'power2.out' });
+            });
+        });
+
+        document.getElementById('close-modal').addEventListener('click', () => {
+             playClickSound();
+             gsap.to(modalContent, { scale: 0.9, duration: 0.3, ease: 'power2.in' });
+             gsap.to(projectModal, { opacity: 0, duration: 0.3, onComplete: () => projectModal.style.display = 'none' });
+        });
+
+
+        // --- EFEITO DE FUNDO THREE.JS ---
+        let scene, camera, renderer, stars;
+
+        function initThree() {
+            scene = new THREE.Scene();
+            camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+            camera.position.z = 1;
+            
+            renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('three-canvas'), alpha: true });
+            renderer.setSize(window.innerWidth, window.innerHeight);
+
+            const starGeo = new THREE.BufferGeometry();
+            const starVertices = [];
+            for (let i = 0; i < 6000; i++) {
+                const x = (Math.random() - 0.5) * 2000;
+                const y = (Math.random() - 0.5) * 2000;
+                const z = (Math.random() - 0.5) * 2000;
+                starVertices.push(x, y, z);
+            }
+            starGeo.setAttribute('position', new THREE.Float32BufferAttribute(starVertices, 3));
+            
+            let starMaterial = new THREE.PointsMaterial({
+                color: 0xaaaaaa,
+                size: 0.7,
+                transparent: true
+            });
+
+            stars = new THREE.Points(starGeo, starMaterial);
+            scene.add(stars);
+
+            window.addEventListener('resize', onWindowResize, false);
+
+            animate();
+        }
+
+        function onWindowResize() {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        }
+
+        function animate() {
+            stars.rotation.y += 0.00005;
+            renderer.render(scene, camera);
+            requestAnimationFrame(animate);
+        }
+
+        initThree();
+    });
+    </script>
+</body>
+</html>
