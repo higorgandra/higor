@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nexus Commerce - Sua Plataforma de Vendas</title>
+    <!-- Tailwind CSS via CDN para carregamento rápido -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter para uma UI limpa e moderna -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Ícones (Feather Icons) -->
+    <script src="https://unpkg.com/feather-icons"></script>
+
+    <style>
+        /* Estilos personalizados e otimizações */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0a0a0a; /* Fundo escuro para um design arrojado */
+            color: #f5f5f5;
+        }
+        .glassmorphism {
+            background: rgba(23, 23, 23, 0.6);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        .btn-primary {
+            @apply bg-blue-600 text-white font-semibold py-3 px-6 rounded-lg shadow-md hover:bg-blue-700 transition-all duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-50;
+        }
+        .btn-secondary {
+            @apply bg-gray-700 text-white font-semibold py-2 px-4 rounded-lg hover:bg-gray-600 transition-all duration-300 ease-in-out;
+        }
+        /* Animação de entrada */
+        .fade-in {
+            animation: fadeIn 0.5s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- Cabeçalho Fixo -->
+    <header class="glassmorphism sticky top-0 z-50">
+        <nav class="container mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20">
+                <div class="flex-shrink-0">
+                    <a href="#" onclick="app.navigateTo('products')" class="text-2xl font-bold text-white flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mr-2 text-blue-500"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                        Nexus
+                    </a>
+                </div>
+                <div class="hidden md:block">
+                    <div class="ml-10 flex items-baseline space-x-4">
+                        <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium" onclick="app.navigateTo('products')">Produtos</a>
+                        <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Sobre</a>
+                        <a href="#" class="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contato</a>
+                    </div>
+                </div>
+                <div class="flex items-center">
+                    <button class="relative text-gray-300 hover:text-white p-2 rounded-full" onclick="app.navigateTo('cart')">
+                        <i data-feather="shopping-cart"></i>
+                        <span id="cart-count-badge" class="absolute -top-1 -right-1 bg-blue-600 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center hidden">0</span>
+                    </button>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Conteúdo Principal Dinâmico -->
+    <main id="app-root" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+        <!-- O conteúdo da aplicação será renderizado aqui pelo JavaScript -->
+    </main>
+
+    <!-- Rodapé -->
+    <footer class="bg-gray-900 mt-16">
+        <div class="container mx-auto py-8 px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2025 Nexus Commerce. Todos os direitos reservados.</p>
+            <p class="text-sm mt-1">Uma plataforma de vendas fictícia criada com foco em performance e UX.</p>
+        </div>
+    </footer>
+
+
+    <!-- =============================================== -->
+    <!--               LÓGICA DA APLICAÇÃO (JS)          -->
+    <!-- =============================================== -->
+    <script>
+        const app = {
+            // ESTADO DA APLICAÇÃO
+            state: {
+                currentView: 'products',
+                products: [],
+                cart: [], // Formato: [{ productId: 1, quantity: 2 }, ...]
+            },
+
+            // INICIALIZAÇÃO
+            init() {
+                console.log("Iniciando a plataforma Nexus Commerce...");
+                this.fetchProducts();
+                this.loadCartFromStorage();
+                this.render();
+                feather.replace(); // Ativa os ícones
+            },
+            
+            // BUSCA DE DADOS (simulado)
+            fetchProducts() {
+                // Em uma aplicação real, isso seria uma chamada de API (fetch('/api/products'))
+                this.state.products = [
+                    { id: 1, name: 'Fone de Ouvido Sem Fio Pro', price: 899.90, image: 'https://placehold.co/400x400/0a0a0a/FFFFFF?text=Fone+Pro', description: 'Qualidade de som imersiva com cancelamento de ruído ativo.' },
+                    { id: 2, name: 'Smartwatch Série X', price: 1499.00, image: 'https://placehold.co/400x400/0a0a0a/FFFFFF?text=Watch+X', description: 'Monitore sua saúde e fique conectado com estilo.' },
+                    { id: 3, name: 'Câmera Mirrorless Z', price: 4999.90, image: 'https://placehold.co/400x400/0a0a0a/FFFFFF?text=Câmera+Z', description: 'Capture momentos inesquecíveis com qualidade profissional.' },
+                    { id: 4, name: 'Notebook UltraSlim i9', price: 9890.50, image: 'https://placehold.co/400x400/0a0a0a/FFFFFF?text=Notebook', description: 'Performance extrema em um design leve e elegante.' },
+                    { id: 5, name: 'Tablet Grafico Digital', price: 650.00, image: 'https://placehold.co/400x400/0a0a0a/FFFFFF?text=Tablet', description: 'Dê vida às suas criações com precisão e fluidez.' },
+                    { id: 6, name: 'Drone Explorer 4K', price: 3200.00, image: 'https://placehold.co/400x400/0a0a0a/FFFFFF?text=Drone', description: 'Explore o mundo de uma nova perspectiva com vídeos em 4K.' },
+                ];
+            },
+
+            // NAVEGAÇÃO
+            navigateTo(view) {
+                this.state.currentView = view;
+                this.render();
+                window.scrollTo(0, 0);
+            },
+            
+            // RENDERIZAÇÃO PRINCIPAL
+            render() {
+                const root = document.getElementById('app-root');
+                root.innerHTML = ''; // Limpa a view atual
+                root.classList.add('fade-in');
+
+                switch (this.state.currentView) {
+                    case 'products':
+                        root.innerHTML = this.renderProductList();
+                        break;
+                    case 'cart':
+                        root.innerHTML = this.renderCartView();
+                        break;
+                    case 'checkout':
+                        root.innerHTML = this.renderCheckoutView();
+                        break;
+                    case 'payment':
+                        root.innerHTML = this.renderPaymentView();
+                        break;
+                    case 'confirmation':
+                         root.innerHTML = this.renderConfirmationView();
+                        break;
+                }
+                
+                this.updateCartBadge();
+                feather.replace();
+                // Remove a animação após a execução para não repetir em interações
+                setTimeout(() => root.classList.remove('fade-in'), 500);
+            },
+
+            // === LÓGICA DO CARRINHO ===
+            addToCart(productId) {
+                const productInCart = this.state.cart.find(item => item.productId === productId);
+                if (productInCart) {
+                    productInCart.quantity++;
+                } else {
+                    this.state.cart.push({ productId, quantity: 1 });
+                }
+                this.saveCartToStorage();
+                this.updateCartBadge();
+                // A notificação agora tem uma ação de clique para navegar ao carrinho
+                this.showToast('Produto adicionado ao carrinho!', 'success', () => this.navigateTo('cart'));
+            },
+            
+            updateCartQuantity(productId, quantity) {
+                const item = this.state.cart.find(item => item.productId === productId);
+                if (item) {
+                    item.quantity = Number(quantity);
+                    if (item.quantity <= 0) {
+                        this.removeFromCart(productId);
+                    } else {
+                        this.saveCartToStorage();
+                        this.render(); // Re-renderiza a view do carrinho
+                    }
+                }
+            },
+
+            removeFromCart(productId) {
+                this.state.cart = this.state.cart.filter(item => item.productId !== productId);
+                this.saveCartToStorage();
+                this.render();
+            },
+            
+            getCartTotal() {
+                return this.state.cart.reduce((total, item) => {
+                    const product = this.state.products.find(p => p.id === item.productId);
+                    return total + (product.price * item.quantity);
+                }, 0);
+            },
+            
+            updateCartBadge() {
+                const badge = document.getElementById('cart-count-badge');
+                const totalItems = this.state.cart.reduce((sum, item) => sum + item.quantity, 0);
+                if (totalItems > 0) {
+                    badge.textContent = totalItems;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            },
+            
+            saveCartToStorage() {
+                localStorage.setItem('nexusCart', JSON.stringify(this.state.cart));
+            },
+            
+            loadCartFromStorage() {
+                const savedCart = localStorage.getItem('nexusCart');
+                if (savedCart) {
+                    this.state.cart = JSON.parse(savedCart);
+                }
+            },
+
+            // === TEMPLATES DE RENDERIZAÇÃO ===
+            renderProductList() {
+                const productsHTML = this.state.products.map(product => `
+                    <div class="glassmorphism rounded-xl overflow-hidden shadow-lg hover:shadow-blue-500/20 transition-shadow duration-300 flex flex-col">
+                        <img class="w-full h-56 object-cover" src="${product.image}" alt="${product.name}">
+                        <div class="p-6 flex flex-col flex-grow">
+                            <h3 class="font-bold text-xl mb-2 text-white">${product.name}</h3>
+                            <p class="text-gray-400 text-base flex-grow">${product.description}</p>
+                            <div class="mt-4 flex justify-between items-center">
+                                <p class="text-blue-400 font-bold text-2xl">R$ ${product.price.toFixed(2).replace('.', ',')}</p>
+                                <button onclick="app.addToCart(${product.id})" class="btn-primary py-2 px-4 text-sm">
+                                    <i data-feather="shopping-cart" class="inline-block mr-1 h-4 w-4"></i>
+                                    Adicionar
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+
+                return `
+                    <section>
+                        <h1 class="text-4xl md:text-5xl font-extrabold text-center mb-4">Explore Nossos Produtos</h1>
+                        <p class="text-lg text-gray-400 text-center mb-12">Tecnologia de ponta para facilitar sua vida.</p>
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                            ${productsHTML}
+                        </div>
+                    </section>
+                `;
+            },
+            
+            renderCartView() {
+                if (this.state.cart.length === 0) {
+                    return `
+                        <div class="relative text-center py-16 glassmorphism rounded-lg">
+                            <button onclick="app.navigateTo('products')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition-colors duration-200">
+                                <i data-feather="x" class="h-8 w-8"></i>
+                            </button>
+                            <i data-feather="shopping-cart" class="h-24 w-24 mx-auto text-gray-600 mb-4"></i>
+                            <h2 class="text-3xl font-bold mb-2">Seu carrinho está vazio</h2>
+                            <p class="text-gray-400 mb-6">Adicione produtos para vê-los aqui.</p>
+                            <button onclick="app.navigateTo('products')" class="btn-primary">Ver Produtos</button>
+                        </div>
+                    `;
+                }
+
+                const cartItemsHTML = this.state.cart.map(item => {
+                    const product = this.state.products.find(p => p.id === item.productId);
+                    return `
+                        <div class="flex items-center justify-between p-4 border-b border-gray-800">
+                            <div class="flex items-center space-x-4">
+                                <img src="${product.image}" alt="${product.name}" class="w-20 h-20 object-cover rounded-md">
+                                <div>
+                                    <h4 class="font-semibold text-lg">${product.name}</h4>
+                                    <p class="text-gray-400">R$ ${product.price.toFixed(2).replace('.', ',')}</p>
+                                </div>
+                            </div>
+                            <div class="flex items-center space-x-4">
+                                <input type="number" value="${item.quantity}" min="1" onchange="app.updateCartQuantity(${product.id}, this.value)" class="w-16 bg-gray-800 border border-gray-700 rounded-md text-center">
+                                <p class="font-semibold w-28 text-right">R$ ${(product.price * item.quantity).toFixed(2).replace('.', ',')}</p>
+                                <button onclick="app.removeFromCart(${product.id})" class="text-gray-500 hover:text-red-500">
+                                    <i data-feather="trash-2"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+
+                return `
+                    <h2 class="text-3xl font-bold mb-8">Meu Carrinho</h2>
+                    <div class="glassmorphism rounded-lg">
+                        ${cartItemsHTML}
+                        <div class="p-6 flex justify-end items-center">
+                            <span class="text-xl font-medium text-gray-300 mr-4">Total:</span>
+                            <span class="text-3xl font-bold text-blue-400">R$ ${this.getCartTotal().toFixed(2).replace('.', ',')}</span>
+                        </div>
+                    </div>
+                    <div class="mt-8 flex justify-end">
+                        <button onclick="app.navigateTo('checkout')" class="btn-primary text-lg">Finalizar Compra</button>
+                    </div>
+                `;
+            },
+            
+            renderCheckoutView() {
+                 return `
+                    <h2 class="text-3xl font-bold mb-8 text-center">Checkout</h2>
+                    <div class="max-w-2xl mx-auto glassmorphism p-8 rounded-lg">
+                        <div class="mb-6">
+                            <label for="name" class="block mb-2 text-sm font-medium text-gray-300">Nome Completo</label>
+                            <input type="text" id="name" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Seu Nome" required>
+                        </div>
+                        <div class="mb-6">
+                            <label for="email" class="block mb-2 text-sm font-medium text-gray-300">Email</label>
+                            <input type="email" id="email" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="seu@email.com" required>
+                        </div>
+                         <div class="mb-6">
+                            <label for="address" class="block mb-2 text-sm font-medium text-gray-300">Endereço de Entrega</label>
+                            <input type="text" id="address" class="bg-gray-800 border border-gray-700 text-white text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5" placeholder="Rua, Número, Bairro, Cidade - Estado" required>
+                        </div>
+                        <button onclick="app.navigateTo('payment')" class="w-full btn-primary">Ir para Pagamento</button>
+                    </div>
+                 `;
+            },
+            
+            renderPaymentView() {
+                // SIMULAÇÃO DA GERAÇÃO DE QR CODE PIX
+                // Em um cenário real, o `qrCodeData` viria de uma chamada à API do seu provedor de pagamento (ex: Banco do Brasil)
+                // ao clicar no botão "Gerar PIX". A API retornaria o código para o QR Code e o "copia e cola".
+                const total = this.getCartTotal().toFixed(2);
+                const qrCodeImageURL = `https://api.qrserver.com/v1/create-qr-code/?size=250x250&data=PIX_SIMULADO_PARA_PAGAMENTO_DE_${total.replace('.','')}`;
+                const pixCopyPasteCode = "00020126360014br.gov.bcb.pix0114+55119999999995204000053039865405${total}5802BR5913NOME_DO_VENDEDOR6009SAO_PAULO62070503***6304ABCD";
+
+                return `
+                    <h2 class="text-3xl font-bold mb-8 text-center">Pagamento</h2>
+                    <div class="max-w-md mx-auto glassmorphism p-8 rounded-lg text-center">
+                        <h3 class="text-xl font-semibold mb-2">Total a Pagar</h3>
+                        <p class="text-4xl font-bold text-blue-400 mb-8">R$ ${total.replace('.', ',')}</p>
+                        
+                        <div class="bg-white p-4 rounded-lg inline-block">
+                            <img src="${qrCodeImageURL}" alt="QR Code PIX" class="w-48 h-48 mx-auto">
+                        </div>
+                        
+                        <p class="text-gray-300 mt-4">Abra o app do seu banco e escaneie o QR Code.</p>
+                        
+                        <div class="mt-6">
+                            <label class="font-semibold text-sm">Ou use o PIX Copia e Cola:</label>
+                            <div class="relative mt-2">
+                                <input type="text" value="${pixCopyPasteCode}" readonly class="bg-gray-800 border border-gray-700 w-full rounded-lg p-2 pr-10 text-xs text-gray-400">
+                                <button onclick="app.copyToClipboard('${pixCopyPasteCode}')" class="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-white">
+                                    <i data-feather="copy" class="h-5 w-5"></i>
+                                </button>
+                            </div>
+                        </div>
+
+                        <div class="mt-8">
+                           <p class="text-sm text-gray-500">Aguardando confirmação de pagamento...</p>
+                           <div class="w-full bg-gray-700 rounded-full h-2.5 mt-2">
+                             <div class="bg-blue-600 h-2.5 rounded-full animate-pulse" style="width: 45%"></div>
+                           </div>
+                        </div>
+
+                        <!-- Botão de simulação de pagamento -->
+                        <button onclick="app.simulatePaymentConfirmation()" class="mt-8 btn-secondary w-full">Simular Pagamento Confirmado</button>
+                    </div>
+                `;
+            },
+            
+            renderConfirmationView() {
+                return `
+                    <div class="text-center py-16">
+                        <i data-feather="check-circle" class="h-24 w-24 mx-auto text-green-500 mb-4"></i>
+                        <h2 class="text-3xl font-bold mb-2">Pagamento Aprovado!</h2>
+                        <p class="text-gray-400 mb-6">Seu pedido foi recebido e já estamos preparando para o envio. <br>Você receberá um email com os detalhes.</p>
+                        <button onclick="app.navigateTo('products')" class="btn-primary">Continuar Comprando</button>
+                    </div>
+                `;
+            },
+
+            // === FUNÇÕES UTILITÁRIAS ===
+            copyToClipboard(text) {
+                navigator.clipboard.writeText(text).then(() => {
+                    this.showToast('Código PIX copiado!');
+                }).catch(err => {
+                    console.error('Erro ao copiar: ', err);
+                    this.showToast('Erro ao copiar código.', 'error');
+                });
+            },
+            
+            showToast(message, type = 'success', action = null) {
+                const toast = document.createElement('div');
+                let baseClasses = `fixed bottom-5 right-5 p-4 rounded-lg shadow-lg text-white flex items-center space-x-3`;
+                const typeClasses = type === 'success' ? 'bg-blue-600' : 'bg-red-600';
+                
+                let content = `<span>${message}</span>`;
+
+                if (action) {
+                    baseClasses += ' cursor-pointer hover:bg-blue-700 transition-colors duration-200';
+                    toast.onclick = () => {
+                        clearTimeout(timeoutId); // Limpa o timeout para não remover duas vezes
+                        action();
+                        toast.remove();
+                    };
+                    // Adiciona um ícone para indicar a clicabilidade
+                    content += `<i data-feather="arrow-right-circle" class="h-5 w-5"></i>`;
+                }
+
+                toast.className = `${baseClasses} ${typeClasses}`;
+                toast.innerHTML = content;
+                
+                document.body.appendChild(toast);
+                feather.replace(); // Renderiza o novo ícone
+
+                const timeoutId = setTimeout(() => {
+                    if (document.body.contains(toast)) {
+                        toast.remove();
+                    }
+                }, 4000); // Dando um pouco mais de tempo para o usuário clicar
+            },
+
+            simulatePaymentConfirmation() {
+                this.showToast('Confirmando pagamento...');
+                // Limpa o carrinho após a confirmação
+                this.state.cart = [];
+                this.saveCartToStorage();
+                
+                setTimeout(() => {
+                    this.navigateTo('confirmation');
+                }, 2000);
+            }
+        };
+
+        // Inicia a aplicação quando a página carregar
+        document.addEventListener('DOMContentLoaded', () => app.init());
+    </script>
+</body>
+</html>
+
+
