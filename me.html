@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higor - Portfólio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .accent-color {
+            color: #00ff95;
+        }
+        .border-color {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .btn-hover:hover {
+            background-color: #00ff95;
+            color: #0a0a0a;
+        }
+        .link-hover:hover {
+            color: #ffffff;
+            background-color: rgba(0, 255, 149, 0.1);
+        }
+        .cursor::after {
+            content: '_';
+            display: inline-block;
+            animation: blink 0.7s infinite;
+            color: #00ff95;
+            font-weight: bold;
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* Estilos para o efeito de foco nos projetos */
+        .project-item {
+            transition: all 0.3s ease-in-out;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Aplica os efeitos de hover apenas em dispositivos que o suportam */
+        @media (hover: hover) {
+            .project-list:hover > .project-item {
+                opacity: 0.5;
+            }
+
+            .project-list > .project-item:hover {
+                opacity: 1;
+                border-color: rgba(0, 255, 149, 0.5); /* Destaca a borda no hover */
+            }
+        }
+        
+        /* Impede o scroll da página principal quando o modal está aberto */
+        body.modal-open {
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
+
+    <!-- Container principal que centraliza todo o conteúdo -->
+    <main class="max-w-2xl w-full">
+
+        <!-- Cabeçalho -->
+        <header class="pt-16 pb-24 text-center">
+            <h1 class="text-6xl md:text-8xl font-bold mb-4 tracking-tighter">Higor<span class="accent-color">.</span></h1>
+            <p class="text-base md:text-lg text-gray-400">
+                <span id="typing-text" class="cursor"></span>
+            </p>
+        </header>
+
+        <!-- Seção de Projetos -->
+        <section class="mb-24">
+            
+            <div class="space-y-8 project-list">
+                
+                <!-- Projeto 1 -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Ela Consultoria e Treinamento</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Website institucional para empresa de consultoria.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">HTML</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">CSS</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">JavaScript</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Consultoria</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">SiteInstitucional</span>
+                    </div>
+                    <a href="#" data-url="https://higorgandra.github.io/elaconsultoriaetreinamento" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
+                </div>
+
+                <!-- Projeto Guarderia Beira Mar -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Guarderia Beira Mar</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Sua escola de surf e náutica familiar.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">HTML</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">CSS</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">JavaScript</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">EscolaDeSurf</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">VidaNáutica</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Ondas</span>
+                    </div>
+                    <a href="#" data-url="https://higorgandra.github.io/guarderiabeiramar" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
+                </div>
+
+                <!-- Projeto Vídeo (CORRIGIDO) -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Barion Drift Salvador | Event Film</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Show de drift e adrenalina no Barion Drift Bahia.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Videomaker</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Filmmaker</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">ContentCreator</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Motorsport</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Drift</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">BarionDrift</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">DriftBahia</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Automobilismo</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">ProducaoDeVideo</span>
+                    </div>
+                    <a href="#" data-url="https://www.pexels.com/pt-br/download/video/26083309/?fps=59.94&h=1920&w=1080.mp4" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Assistir Vídeo ↗</a>
+                </div>
+
+                <!-- Projeto Ferramenta de Otimização -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Ferramenta de Otimização</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Ferramenta de otimização 100% indetectável.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">HTML5</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">CSS3</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">JavaScript</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">SaaS</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Tibia</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">UI/UX</span>
+                    </div>
+                    <a href="#" data-url="https://higorgandra.github.io/flmR" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Ferramenta ↗</a>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- Seção de Contato -->
+        <section class="py-16 text-center">
+            <h2 class="text-2xl font-bold mb-4">Vamos criar algo juntos<span class="accent-color">?</span></h2>
+            <p class="text-gray-400 max-w-sm mx-auto mb-8">Sua ideia, executada com precisão e elegância.</p>
+            
+            <a href="https://wa.me/SEUNUMERO" target="_blank" class="inline-block bg-transparent text-accent-color font-bold text-lg border-2 border-accent-color px-12 py-4 rounded-sm transition-colors duration-300 btn-hover">
+                Falar no WhatsApp
+            </a>
+        </section>
+
+    </main>
+
+    <!-- Modal para visualização de projetos -->
+    <div id="project-modal" class="fixed inset-0 bg-[#0a0a0a] flex-col items-center justify-center hidden z-50">
+        <div class="w-full bg-[#111] p-3 flex justify-end items-center z-10">
+             <button id="close-modal-btn" class="text-gray-400 hover:text-white transition-colors flex items-center">
+                 <span class="mr-2 text-sm">Fechar</span>
+                 <span class="font-bold text-2xl leading-none">&times;</span>
+             </button>
+        </div>
+        <div class="relative w-full flex-grow flex items-center justify-center">
+            <!-- Indicador de Carregamento -->
+            <div id="loading-indicator" class="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-20">
+                <p class="text-gray-400 text-lg animate-pulse">Carregando...</p>
+            </div>
+            <!-- Iframe para sites -->
+            <iframe id="project-iframe" class="w-full h-full border-0 opacity-0 transition-opacity duration-300 absolute inset-0" src="" allowfullscreen style="display: none;"></iframe>
+            <!-- Video para MP4 -->
+            <video id="project-video" class="w-full h-full object-contain opacity-0 transition-opacity duration-300 absolute inset-0 bg-black" controls autoplay loop muted style="display: none;"></video>
+        </div>
+    </div>
+
+    <script>
+        // Animação de digitação
+        const typingTextElement = document.getElementById('typing-text');
+        const words = ["Digital", "Publicitário", "Fotógrafo", "VideoMaker", "WebDesigner", "Tatuador"];
+        let wordIndex = 0;
+        let charIndex = 0;
+        let isDeleting = false;
+        
+        const typeSpeed = 17;
+        const deleteSpeed = 13;
+
+        function type() {
+            const currentWord = words[wordIndex];
+            
+            if (isDeleting) {
+                typingTextElement.textContent = currentWord.substring(0, charIndex - 1);
+                charIndex--;
+                if (charIndex === 0) {
+                    isDeleting = false;
+                    wordIndex = (wordIndex + 1) % words.length;
+                    setTimeout(type, 500);
+                    return;
+                }
+            } else {
+                typingTextElement.textContent = currentWord.substring(0, charIndex + 1);
+                charIndex++;
+                if (charIndex === currentWord.length) {
+                    isDeleting = true;
+                    let waitTime;
+                    switch (wordIndex) {
+                        case 0: // Digital
+                            waitTime = 2200;
+                            break;
+                        case 1: // Publicitário
+                            waitTime = 1700;
+                            break;
+                        case 2: // Fotógrafo
+                            waitTime = 1300;
+                            break;
+                        case 3: // VideoMaker
+                            waitTime = 1900;
+                            break;
+                        case 4: // WebDesigner
+                            waitTime = 777;
+                            break;
+                        case 5: // Tatuador
+                            waitTime = 500;
+                            break;
+                        default:
+                            waitTime = 1700; // Fallback
+                    }
+                    setTimeout(type, waitTime);
+                    return;
+                }
+            }
+            const speed = isDeleting ? deleteSpeed : typeSpeed;
+            setTimeout(type, speed);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Inicia a animação de digitação
+            setTimeout(type, 500);
+
+            // Lógica do Modal
+            const modal = document.getElementById('project-modal');
+            const iframe = document.getElementById('project-iframe');
+            const videoElement = document.getElementById('project-video');
+            const loadingIndicator = document.getElementById('loading-indicator');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalTriggers = document.querySelectorAll('[data-modal-trigger]');
+
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    
+                    loadingIndicator.classList.remove('hidden'); // Sempre mostra o carregando no início
+                    iframe.classList.add('opacity-0');
+                    videoElement.classList.add('opacity-0');
+                    
+                    const url = trigger.getAttribute('data-url');
+                    const isVideo = url.includes('.mp4');
+                    
+                    if (isVideo) {
+                        iframe.style.display = 'none';
+                        videoElement.style.display = 'block';
+                        videoElement.setAttribute('src', url);
+                        videoElement.load(); // Garante que o navegador tente carregar o vídeo
+                        
+                        videoElement.onloadeddata = () => {
+                            loadingIndicator.classList.add('hidden');
+                            videoElement.classList.remove('opacity-0');
+                            videoElement.play();
+                        };
+                        videoElement.onerror = () => {
+                            console.error("Erro ao carregar o vídeo.");
+                            loadingIndicator.classList.add('hidden');
+                            // Adicionar aqui uma mensagem de erro ao usuário se desejar
+                        };
+
+                    } else {
+                        videoElement.style.display = 'none';
+                        iframe.style.display = 'block';
+                        iframe.setAttribute('src', url);
+                        
+                        iframe.onload = () => {
+                            loadingIndicator.classList.add('hidden');
+                            iframe.classList.remove('opacity-0');
+                        };
+                        iframe.onerror = () => {
+                            console.error("Erro ao carregar o iframe.");
+                            loadingIndicator.classList.add('hidden');
+                            // Adicionar aqui uma mensagem de erro ao usuário se desejar
+                        };
+                    }
+                    
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    document.body.classList.add('modal-open');
+                });
+            });
+            
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    
+                    iframe.setAttribute('src', ''); // Limpa o src do iframe
+                    videoElement.pause(); // Pausa o vídeo
+                    videoElement.setAttribute('src', ''); // Limpa o src do vídeo
+                    
+                    document.body.classList.remove('modal-open');
+                    
+                    // Reseta os estados visuais
+                    loadingIndicator.classList.remove('hidden');
+                    iframe.classList.add('opacity-0');
+                    videoElement.classList.add('opacity-0');
+                    iframe.style.display = 'none';
+                    videoElement.style.display = 'none';
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
+
