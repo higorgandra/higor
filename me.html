@@ -184,7 +184,7 @@
     <script>
         // Animação de digitação
         const typingTextElement = document.getElementById('typing-text');
-        const words = ["Digital", "Publicitário", "Fotógrafo", "VideoMaker", "WebDesigner", "Tatuador"];
+        const words = ["Digital", "Publicitário", "Estrategista de IA", "Fotógrafo", "VideoMaker", "WebDesigner", "Tatuador"];
         let wordIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
@@ -217,16 +217,19 @@
                         case 1: // Publicitário
                             waitTime = 1700;
                             break;
-                        case 2: // Fotógrafo
+                        case 2: // Estrategista de IA
+                            waitTime = 1700;
+                            break;
+                        case 3: // Fotógrafo
                             waitTime = 1300;
                             break;
-                        case 3: // VideoMaker
+                        case 4: // VideoMaker
                             waitTime = 1900;
                             break;
-                        case 4: // WebDesigner
+                        case 5: // WebDesigner
                             waitTime = 777;
                             break;
-                        case 5: // Tatuador
+                        case 6: // Tatuador
                             waitTime = 500;
                             break;
                         default:
