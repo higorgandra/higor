@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Higor - Portfólio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        .accent-color {
+            color: #00ff95;
+        }
+        .border-color {
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+        .link-hover:hover {
+            color: #ffffff;
+            background-color: rgba(0, 255, 149, 0.1);
+        }
+        
+        /* Estilos para o efeito de foco nos projetos */
+        .project-item {
+            transition: all 0.3s ease-in-out;
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        /* Aplica os efeitos de hover apenas em dispositivos que o suportam */
+        @media (hover: hover) {
+            .project-list:hover > .project-item {
+                opacity: 0.5;
+            }
+
+            .project-list > .project-item:hover {
+                opacity: 1;
+                border-color: rgba(0, 255, 149, 0.5);
+            }
+        }
+        
+        body.modal-open {
+            overflow: hidden;
+        }
+
+        /* Estilos para o novo cabeçalho com Canvas */
+        header {
+            position: relative;
+            z-index: 1;
+            overflow: hidden; /* Garante que as partículas não saem do header */
+        }
+        #header-canvas-container {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100%;
+            height: 100%;
+            transform: translate(-50%, -50%);
+            z-index: -1; /* Coloca o canvas atrás do texto */
+            opacity: 0.3; /* Torna a animação subtil */
+        }
+        #generative-art-canvas {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }
+    </style>
+</head>
+<body class="flex items-center justify-center min-h-screen p-4 sm:p-6 md:p-8">
+
+    <main class="max-w-2xl w-full">
+
+        <!-- Cabeçalho Modificado com Animação C++/WASM -->
+        <header class="pt-16 pb-24 text-center">
+            <div id="header-canvas-container">
+                 <canvas id="generative-art-canvas"></canvas>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-bold mb-4 tracking-tighter">Higor<span class="accent-color">.</span></h1>
+        </header>
+
+        <!-- Seção de Projetos -->
+        <section class="mb-24">
+            <div class="space-y-8 project-list">
+                <!-- Projeto 1 -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Ela Consultoria e Treinamento</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Website institucional para empresa de consultoria.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">HTML</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">CSS</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">JavaScript</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Consultoria</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">SiteInstitucional</span>
+                    </div>
+                    <a href="#" data-url="https://higorgandra.github.io/elaconsultoriaetreinamento" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
+                </div>
+                <!-- Projeto Guarderia Beira Mar -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Guarderia Beira Mar</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Sua escola de surf e náutica familiar.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">HTML</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">CSS</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">JavaScript</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">EscolaDeSurf</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">VidaNáutica</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Ondas</span>
+                    </div>
+                    <a href="#" data-url="https://higorgandra.github.io/guarderiabeiramar" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
+                </div>
+                <!-- Projeto Vídeo -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">Barion Drift Salvador</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Show de drift e adrenalina no Barion Drift Bahia.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Videomaker</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Filmmaker</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">ContentCreator</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">Motorsport</span>
+                    </div>
+                    <a href="#" data-url="#" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Assistir Vídeo ↗</a>
+                </div>
+                <!-- Projeto Ferramenta de Otimização -->
+                <div class="project-item text-left border border-color p-6 rounded-lg">
+                    <h3 class="text-xl font-bold mb-2">flmR - Bot Yourself</h3>
+                    <p class="text-gray-400 mb-4 text-sm">Ferramenta de otimização 100% indetectável.</p>
+                    <div class="flex flex-wrap gap-2 text-xs mb-6">
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">HTML5</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">CSS3</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">JavaScript</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">SaaS</span>
+                        <span class="bg-gray-800 px-2 py-1 rounded-full">UI/UX</span>
+                    </div>
+                    <a href="#" data-url="https://higorgandra.github.io/flmR" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Ferramenta ↗</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Seção de Contato -->
+        <section class="py-16 text-center">
+            <h2 class="text-2xl font-bold mb-4">Pensado para ser diferente<span class="accent-color">.</span></h2>
+            <p class="text-gray-400 max-w-sm mx-auto mb-8">Sua ideia, executada com precisão.</p>
+            <a id="whatsapp-btn" href="https://wa.me/SEUNUMERO" target="_blank" class="inline-block bg-transparent text-accent-color font-bold text-lg border-2 border-accent-color px-12 py-4 rounded-xl transition-all duration-300">
+                Falar no WhatsApp
+            </a>
+        </section>
+    </main>
+
+    <!-- Modal para visualização de projetos -->
+    <div id="project-modal" class="fixed inset-0 bg-[#0a0a0a] flex-col items-center justify-center hidden z-50">
+        <div class="w-full bg-[#111] p-3 flex justify-end items-center z-10">
+             <button id="close-modal-btn" class="text-gray-400 hover:text-white transition-colors flex items-center">
+                 <span class="mr-2 text-sm">Fechar</span>
+                 <span class="font-bold text-2xl leading-none">&times;</span>
+             </button>
+        </div>
+        <div class="relative w-full flex-grow flex items-center justify-center">
+            <div id="status-indicator" class="absolute inset-0 flex items-center justify-center bg-[#0a0a0a] z-20">
+                <p id="modal-status-text" class="text-gray-400 text-lg text-center leading-relaxed">Carregando...</p>
+            </div>
+            <iframe id="project-iframe" class="w-full h-full border-0 opacity-0 transition-opacity duration-300 absolute inset-0" src="" allowfullscreen style="display: none;"></iframe>
+            <video id="project-video" class="w-full h-full object-contain opacity-0 transition-opacity duration-300 absolute inset-0 bg-black" controls autoplay loop muted style="display: none;"></video>
+        </div>
+    </div>
+
+    <!-- A ORDEM DESTES SCRIPTS É CRUCIAL -->
+    <script>
+        // Define o objeto Module ANTES do script particles.js ser carregado.
+        // Isto garante que o script do Emscripten tenha um sítio para anexar as suas funções.
+        var Module = {
+            onRuntimeInitialized: function() {
+                // O WASM está pronto. Agora podemos chamar as funções C++.
+                const canvas = document.getElementById('generative-art-canvas');
+                if (!canvas) return;
+                const ctx = canvas.getContext('2d');
+                let animationFrameId;
+
+                // Liga as funções C++ exportadas a variáveis JavaScript para facilitar o uso.
+                const init = Module.cwrap('init', null, ['number', 'number']);
+                const updateParticles = Module.cwrap('update_particles', null, []);
+                const getParticleBuffer = Module.cwrap('get_particle_buffer', 'number', []);
+                const getParticleCount = Module.cwrap('get_particle_count', 'number', []);
+
+                function setup() {
+                    const container = canvas.parentElement;
+                    canvas.width = container.clientWidth;
+                    canvas.height = container.clientHeight;
+                    // Chama a função init do C++ para (re)inicializar as partículas com o novo tamanho do canvas.
+                    init(canvas.width, canvas.height);
+                }
+
+                function connect(particleData, particleCount) {
+                    for (let a = 0; a < particleCount; a++) {
+                        for (let b = a; b < particleCount; b++) {
+                            const ax = particleData[a * 5];
+                            const ay = particleData[a * 5 + 1];
+                            const bx = particleData[b * 5];
+                            const by = particleData[b * 5 + 1];
+                            const distance = Math.hypot(ax - bx, ay - by);
+
+                            if (distance < 100) {
+                                const opacityValue = 1 - (distance / 100);
+                                ctx.strokeStyle = `rgba(0, 255, 149, ${opacityValue})`;
+                                ctx.lineWidth = 0.5;
+                                ctx.beginPath();
+                                ctx.moveTo(ax, ay);
+                                ctx.lineTo(bx, by);
+                                ctx.stroke();
+                            }
+                        }
+                    }
+                }
+
+                function animate() {
+                    // 1. Pede ao C++ para atualizar as posições de todas as partículas (a parte pesada da computação).
+                    updateParticles();
+
+                    // 2. Obtém os dados atualizados diretamente da memória do WASM.
+                    const particleCount = getParticleCount();
+                    const bufferOffset = getParticleBuffer();
+                    // Cria uma "vista" (view) para o buffer de memória do WASM, sem copiar dados, o que é muito eficiente.
+                    const particleData = new Float32Array(Module.HEAPF32.buffer, bufferOffset, particleCount * 5);
+                    
+                    // 3. Limpa o canvas e desenha as partículas (a parte de renderização, feita em JS).
+                    ctx.clearRect(0, 0, canvas.width, canvas.height);
+                    
+                    for (let i = 0; i < particleCount; i++) {
+                        // Acede aos dados da partícula diretamente do buffer.
+                        const x = particleData[i * 5];
+                        const y = particleData[i * 5 + 1];
+                        const size = particleData[i * 5 + 2];
+                        
+                        ctx.fillStyle = '#00ff95';
+                        ctx.beginPath();
+                        ctx.arc(x, y, size, 0, Math.PI * 2);
+                        ctx.fill();
+                    }
+                    
+                    // Desenha as linhas de conexão entre as partículas.
+                    connect(particleData, particleCount);
+                    
+                    // Continua o loop de animação.
+                    animationFrameId = requestAnimationFrame(animate);
+                }
+
+                setup();
+                animate();
+                window.addEventListener('resize', setup);
+            }
+        };
+    </script>
+    <script src="particles.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // --- LÓGICA DOS MODAIS E BOTÃO (Independente do WASM) ---
+            const modal = document.getElementById('project-modal');
+            const iframe = document.getElementById('project-iframe');
+            const videoElement = document.getElementById('project-video');
+            const statusIndicator = document.getElementById('status-indicator');
+            const modalStatusText = document.getElementById('modal-status-text');
+            const closeModalBtn = document.getElementById('close-modal-btn');
+            const modalTriggers = document.querySelectorAll('[data-modal-trigger]');
+            let countdownInterval;
+
+            modalTriggers.forEach(trigger => {
+                trigger.addEventListener('click', (event) => {
+                    event.preventDefault();
+                    statusIndicator.classList.remove('hidden');
+                    iframe.style.display = 'none';
+                    videoElement.style.display = 'none';
+                    const url = trigger.getAttribute('data-url');
+                    
+                    if (url === '#') {
+                        modalStatusText.innerHTML = 'Em construção...<br><span class="text-sm">Fechando em (<span id="countdown-timer">5</span>)</span>';
+                        modalStatusText.classList.remove('animate-pulse');
+                        let count = 5;
+                        countdownInterval = setInterval(() => {
+                            count--;
+                            const countdownTimerElement = document.getElementById('countdown-timer');
+                            if (countdownTimerElement) countdownTimerElement.textContent = count;
+                            if (count <= 0) {
+                                clearInterval(countdownInterval);
+                                closeModalBtn.click();
+                            }
+                        }, 1000);
+                    } else {
+                        modalStatusText.textContent = 'Carregando...';
+                        modalStatusText.classList.add('animate-pulse');
+                        iframe.classList.add('opacity-0');
+                        videoElement.classList.add('opacity-0');
+                        const isVideo = url.endsWith('.mp4');
+                        if (isVideo) {
+                            videoElement.style.display = 'block';
+                            videoElement.setAttribute('src', url);
+                            videoElement.onloadeddata = () => { statusIndicator.classList.add('hidden'); videoElement.classList.remove('opacity-0'); videoElement.play(); };
+                            videoElement.onerror = () => { modalStatusText.textContent = 'Erro ao carregar o vídeo.'; modalStatusText.classList.remove('animate-pulse'); };
+                        } else {
+                            iframe.style.display = 'block';
+                            iframe.setAttribute('src', url);
+                            iframe.onload = () => { statusIndicator.classList.add('hidden'); iframe.classList.remove('opacity-0'); };
+                            iframe.onerror = () => { modalStatusText.textContent = 'Erro ao carregar o conteúdo.'; modalStatusText.classList.remove('animate-pulse'); };
+                        }
+                    }
+                    modal.classList.remove('hidden');
+                    modal.classList.add('flex');
+                    document.body.classList.add('modal-open');
+                });
+            });
+            
+            if (closeModalBtn) {
+                closeModalBtn.addEventListener('click', () => {
+                    clearInterval(countdownInterval);
+                    modal.classList.add('hidden');
+                    modal.classList.remove('flex');
+                    iframe.setAttribute('src', '');
+                    videoElement.pause();
+                    videoElement.setAttribute('src', '');
+                    document.body.classList.remove('modal-open');
+                    statusIndicator.classList.remove('hidden');
+                    iframe.classList.add('opacity-0');
+                    videoElement.classList.add('opacity-0');
+                    iframe.style.display = 'none';
+                    videoElement.style.display = 'none';
+                });
+            }
+
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            if (whatsappBtn) {
+                const originalText = whatsappBtn.textContent;
+                let countdownIntervalId = null;
+                let isCountingDown = false;
+
+                whatsappBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+                    if (isCountingDown) {
+                        clearInterval(countdownIntervalId);
+                        this.textContent = originalText;
+                        this.classList.remove('bg-accent-color', 'text-black');
+                        isCountingDown = false;
+                        return;
+                    }
+
+                    isCountingDown = true;
+                    const href = this.getAttribute('href');
+                    let countdown = 5;
+                    this.classList.add('bg-accent-color', 'text-black');
+                    
+                    this.textContent = `Abrindo WhatsApp em (${countdown})`;
+                    
+                    countdownIntervalId = setInterval(() => {
+                        countdown--;
+                        this.textContent = `Abrindo WhatsApp em (${countdown})`;
+                        if (countdown <= 0) {
+                            clearInterval(countdownIntervalId);
+                            window.open(href, '_blank');
+                            this.textContent = originalText;
+                            this.classList.remove('bg-accent-color', 'text-black');
+                            isCountingDown = false;
+                        }
+                    }, 1000);
+                });
+            }
+        });
+    </script>
+</body>
+</html>
+
