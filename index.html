@@ -22,11 +22,21 @@
         .border-color {
             border-color: rgba(255, 255, 255, 0.1);
         }
+        .border-accent-color {
+            border-color: #00ff95;
+        }
         .link-hover:hover {
             color: #ffffff;
             background-color: rgba(0, 255, 149, 0.1);
         }
         
+        /* CORREÇÃO: Lógica do botão refatorada para ser mais robusta */
+        #whatsapp-btn.counting-down {
+            background-color: #00ff95;
+            color: #0a0a0a; /* Cor do fundo para contraste */
+            border-color: #00ff95;
+        }
+
         /* Estilos para o efeito de foco nos projetos */
         .project-item {
             transition: all 0.3s ease-in-out;
@@ -342,7 +352,7 @@
                     if (isCountingDown) {
                         clearInterval(countdownIntervalId);
                         this.textContent = originalText;
-                        this.classList.remove('bg-accent-color', 'text-black');
+                        this.classList.remove('counting-down');
                         isCountingDown = false;
                         return;
                     }
@@ -350,7 +360,7 @@
                     isCountingDown = true;
                     const href = this.getAttribute('href');
                     let countdown = 5;
-                    this.classList.add('bg-accent-color', 'text-black');
+                    this.classList.add('counting-down');
                     
                     this.textContent = `Abrindo WhatsApp em (${countdown})`;
                     
@@ -361,7 +371,7 @@
                             clearInterval(countdownIntervalId);
                             window.open(href, '_blank');
                             this.textContent = originalText;
-                            this.classList.remove('bg-accent-color', 'text-black');
+                            this.classList.remove('counting-down');
                             isCountingDown = false;
                         }
                     }, 1000);
