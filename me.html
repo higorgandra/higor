@@ -22,10 +22,6 @@
         .border-color {
             border-color: rgba(255, 255, 255, 0.1);
         }
-        .btn-hover:hover {
-            background-color: #00ff95;
-            color: #0a0a0a;
-        }
         .link-hover:hover {
             color: #ffffff;
             background-color: rgba(0, 255, 149, 0.1);
@@ -74,7 +70,7 @@
         <!-- Cabeçalho -->
         <header class="pt-16 pb-24 text-center">
             <h1 class="text-6xl md:text-8xl font-bold mb-4 tracking-tighter">Higor<span class="accent-color">.</span></h1>
-            <p class="text-base md:text-lg text-gray-400">
+            <p class="text-base md:text-lg text-gray-400 min-h-[28px]">
                 <span id="typing-text" class="cursor"></span>
             </p>
         </header>
@@ -151,10 +147,10 @@
 
         <!-- Seção de Contato -->
         <section class="py-16 text-center">
-            <h2 class="text-2xl font-bold mb-4">Vamos criar algo juntos<span class="accent-color">?</span></h2>
-            <p class="text-gray-400 max-w-sm mx-auto mb-8">Sua ideia, executada com precisão e elegância.</p>
+            <h2 class="text-2xl font-bold mb-4">Vamos criar algo incrível<span class="accent-color">?</span></h2>
+            <p class="text-gray-400 max-w-sm mx-auto mb-8">Sua ideia, executada com precisão.</p>
             
-            <a href="https://wa.me/SEUNUMERO" target="_blank" class="inline-block bg-transparent text-accent-color font-bold text-lg border-2 border-accent-color px-12 py-4 rounded-sm transition-colors duration-300 btn-hover">
+            <a id="whatsapp-btn" href="https://wa.me/+5571988728844" target="_blank" class="inline-block bg-transparent text-accent-color font-bold text-lg border-2 border-accent-color px-12 py-4 rounded-xl transition-all duration-300">
                 Falar no WhatsApp
             </a>
         </section>
@@ -184,23 +180,101 @@
     <script>
         // Animação de digitação
         const typingTextElement = document.getElementById('typing-text');
-        const words = ["Digital", "Publicitário", "Estrategista de IA", "Fotógrafo", "VideoMaker", "WebDesigner", "Tatuador"];
-        let wordIndex = 0;
+        
+        // LISTA DE PALAVRAS-CHAVE: Altere esta lista para modificar a animação.
+        const words = [
+            "Cobertura de Eventos",
+            "Design Gráfico",
+            "Digital",
+            "UI/UX",
+            "Direção de Arte",
+            "Branding e Identidade Visual",
+            "Storytelling Visual",
+            "Arte Finalista",
+            "Criação de Conteúdo",
+            "Marketing Digital",
+            "Publicidade e Campanhas",
+            "IA",
+            "SEO",
+            "Gestão de Mídias Sociais",
+            "Copywriting",
+            "Análise de Dados",
+            "Planeamento de Mídia",
+            "Comunicação de Marca",
+            "Inovação Digital",
+            "WebDesign Responsivo",
+            "HTML5 & CSS3",
+            "JavaScript",
+            "E-commerce",
+            "Desenvolvimento Front-End",
+            "Otimização de Performance",
+            "Consultoria Tecnológica",
+            "Fotografia de Produto e Retrato",
+            "Edição de Vídeo e Imagem",
+            "Produção de Vídeo",
+            "Pós-produção",
+            "Roteiro",
+            "Iluminação e Cenografia",
+            "Fotografia Profissional",
+            "Adobe Photoshop",
+            "Capcut",
+            "Tatuador Fine Line e Blackout",
+            "Projetos Autorais",
+        ];
+
+        let typingQueue = [];
+        let queueIndex = 0;
         let charIndex = 0;
         let isDeleting = false;
         
         const typeSpeed = 17;
         const deleteSpeed = 13;
 
+        // Função para embaralhar um array (algoritmo Fisher-Yates)
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Função para inicializar e configurar a fila de digitação
+        function initializeTypingQueue() {
+            const initialWord = "Cobertura de Eventos";
+            // Filtra todas as palavras exceto a inicial
+            let otherWords = words.filter(w => w !== initialWord);
+            // Embaralha as outras palavras
+            let shuffledOtherWords = shuffleArray(otherWords);
+            // Cria a fila final, com a palavra inicial no começo
+            typingQueue = [initialWord, ...shuffledOtherWords];
+            queueIndex = 0; // Reseta o índice da fila
+        }
+
         function type() {
-            const currentWord = words[wordIndex];
+            const currentWord = typingQueue[queueIndex];
             
             if (isDeleting) {
                 typingTextElement.textContent = currentWord.substring(0, charIndex - 1);
                 charIndex--;
                 if (charIndex === 0) {
                     isDeleting = false;
-                    wordIndex = (wordIndex + 1) % words.length;
+                    queueIndex++; // Avança para a próxima palavra na fila
+                    
+                    // Se a fila terminou, cria uma nova, garantindo que não repita a última palavra no início
+                    if (queueIndex >= typingQueue.length) {
+                        const lastWord = typingQueue[typingQueue.length - 1];
+                        let newQueue = shuffleArray([...words]);
+                        
+                        // Se a nova primeira palavra for igual à última antiga, move-a para o final da fila
+                        if (newQueue[0] === lastWord) {
+                            newQueue.push(newQueue.shift());
+                        }
+                        
+                        typingQueue = newQueue;
+                        queueIndex = 0;
+                    }
+                    
                     setTimeout(type, 500);
                     return;
                 }
@@ -209,32 +283,7 @@
                 charIndex++;
                 if (charIndex === currentWord.length) {
                     isDeleting = true;
-                    let waitTime;
-                    switch (wordIndex) {
-                        case 0: // Digital
-                            waitTime = 2200;
-                            break;
-                        case 1: // Publicitário
-                            waitTime = 1700;
-                            break;
-                        case 2: // Estrategista de IA
-                            waitTime = 1700;
-                            break;
-                        case 3: // Fotógrafo
-                            waitTime = 1300;
-                            break;
-                        case 4: // VideoMaker
-                            waitTime = 1900;
-                            break;
-                        case 5: // WebDesigner
-                            waitTime = 777;
-                            break;
-                        case 6: // Tatuador
-                            waitTime = 500;
-                            break;
-                        default:
-                            waitTime = 1700; // Fallback
-                    }
+                    const waitTime = 777; // Delay fixo
                     setTimeout(type, waitTime);
                     return;
                 }
@@ -244,6 +293,7 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
+            initializeTypingQueue(); // Configura a fila pela primeira vez
             // Inicia a animação de digitação
             setTimeout(type, 500);
 
@@ -347,6 +397,52 @@
                     videoElement.classList.add('opacity-0');
                     iframe.style.display = 'none';
                     videoElement.style.display = 'none';
+                });
+            }
+
+            // Lógica do Botão WhatsApp
+            const whatsappBtn = document.getElementById('whatsapp-btn');
+            if (whatsappBtn) {
+                const originalText = whatsappBtn.innerHTML;
+                let isCountingDown = false;
+                let countdownIntervalId = null;
+
+                whatsappBtn.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    if (isCountingDown) {
+                        // Cancela a contagem regressiva se clicar novamente
+                        clearInterval(countdownIntervalId);
+                        this.innerHTML = originalText;
+                        this.style.backgroundColor = 'transparent';
+                        this.style.color = '#00ff95';
+                        isCountingDown = false;
+                        countdownIntervalId = null;
+                    } else {
+                        // Inicia a contagem regressiva
+                        isCountingDown = true;
+                        const href = this.getAttribute('href');
+                        let countdown = 5;
+                        
+                        this.style.backgroundColor = '#00ff95';
+                        this.style.color = '#0a0a0a';
+                        this.innerHTML = `Abrindo WhatsApp em (${countdown})`;
+
+                        countdownIntervalId = setInterval(() => {
+                            countdown--;
+                            if (countdown >= 1) {
+                                this.innerHTML = `Abrindo WhatsApp em (${countdown})`;
+                            } else {
+                                clearInterval(countdownIntervalId);
+                                window.open(href, '_blank');
+                                this.innerHTML = originalText;
+                                this.style.backgroundColor = 'transparent';
+                                this.style.color = '#00ff95';
+                                isCountingDown = false;
+                                countdownIntervalId = null;
+                            }
+                        }, 1000);
+                    }
                 });
             }
         });
