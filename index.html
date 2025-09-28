@@ -4,8 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Higor - Portfólio</title>
-    <!-- A SOLUÇÃO DEFINITIVA: Define o caminho base para todos os ficheiros -->
-    <base href="/higor/">
+    <!-- A tag <base> foi removida para uma abordagem de caminho mais explícita -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -171,7 +170,8 @@
 
     <script>
         var Module = {
-            wasmBinaryFile: 'particles.wasm', 
+            // CORREÇÃO: Caminho absoluto a partir da raiz do domínio.
+            wasmBinaryFile: '/higor/particles.wasm', 
             onRuntimeInitialized: function() {
                 const canvas = document.getElementById('generative-art-canvas');
                 if (!canvas) return;
@@ -241,7 +241,8 @@
             }
         };
     </script>
-    <script src="particles.js"></script>
+    <!-- CORREÇÃO: Caminho absoluto a partir da raiz do domínio. -->
+    <script src="/higor/particles.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const modal = document.getElementById('project-modal');
