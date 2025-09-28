@@ -170,8 +170,12 @@
     <script>
         var Module = {
             onRuntimeInitialized: function() {
+                console.log("SUCESSO: O módulo C++/WASM foi inicializado!");
                 const canvas = document.getElementById('generative-art-canvas');
-                if (!canvas) return;
+                if (!canvas) {
+                    console.error("ERRO: O elemento canvas não foi encontrado.");
+                    return;
+                }
                 const ctx = canvas.getContext('2d');
                 let animationFrameId;
 
@@ -185,6 +189,7 @@
                     canvas.width = container.clientWidth;
                     canvas.height = container.clientHeight;
                     init(canvas.width, canvas.height);
+                    console.log(`Canvas (re)inicializado com tamanho: ${canvas.width}x${canvas.height}`);
                 }
 
                 function connect(particleData, particleCount) {
@@ -241,6 +246,7 @@
     <script src="./particles.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+            console.log("INFO: O DOM foi carregado. Funções do modal e botão inicializadas.");
             const modal = document.getElementById('project-modal');
             const iframe = document.getElementById('project-iframe');
             const videoElement = document.getElementById('project-video');
