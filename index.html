@@ -137,7 +137,7 @@
                         <span class="bg-gray-800 px-2 py-1 rounded-full">SaaS</span>
                         <span class="bg-gray-800 px-2 py-1 rounded-full">UI/UX</span>
                     </div>
-                    <a href="#" data-url="https://higorgandra.github.io/flmR" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Ferramenta ↗</a>
+                    <a href="#" data-url="https://higorgandra.github.io/flmR" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
                 </div>
             </div>
         </section>
@@ -279,19 +279,41 @@
                     } else {
                         modalStatusText.textContent = 'Carregando...';
                         modalStatusText.classList.add('animate-pulse');
+
+                        let loadingTimeout = setTimeout(() => {
+                            modalStatusText.textContent = 'Aguarde...';
+                        }, 4000);
+
                         iframe.classList.add('opacity-0');
                         videoElement.classList.add('opacity-0');
                         const isVideo = url.endsWith('.mp4');
                         if (isVideo) {
                             videoElement.style.display = 'block';
                             videoElement.setAttribute('src', url);
-                            videoElement.onloadeddata = () => { statusIndicator.classList.add('hidden'); videoElement.classList.remove('opacity-0'); videoElement.play(); };
-                            videoElement.onerror = () => { modalStatusText.textContent = 'Erro ao carregar o vídeo.'; modalStatusText.classList.remove('animate-pulse'); };
+                            videoElement.onloadeddata = () => { 
+                                clearTimeout(loadingTimeout);
+                                statusIndicator.classList.add('hidden'); 
+                                videoElement.classList.remove('opacity-0'); 
+                                videoElement.play(); 
+                            };
+                            videoElement.onerror = () => { 
+                                clearTimeout(loadingTimeout);
+                                modalStatusText.textContent = 'Erro ao carregar o vídeo.'; 
+                                modalStatusText.classList.remove('animate-pulse'); 
+                            };
                         } else {
                             iframe.style.display = 'block';
                             iframe.setAttribute('src', url);
-                            iframe.onload = () => { statusIndicator.classList.add('hidden'); iframe.classList.remove('opacity-0'); };
-                            iframe.onerror = () => { modalStatusText.textContent = 'Erro ao carregar o conteúdo.'; modalStatusText.classList.remove('animate-pulse'); };
+                            iframe.onload = () => { 
+                                clearTimeout(loadingTimeout);
+                                statusIndicator.classList.add('hidden'); 
+                                iframe.classList.remove('opacity-0'); 
+                            };
+                            iframe.onerror = () => { 
+                                clearTimeout(loadingTimeout);
+                                modalStatusText.textContent = 'Erro ao carregar o conteúdo.'; 
+                                modalStatusText.classList.remove('animate-pulse'); 
+                            };
                         }
                     }
                     modal.classList.remove('hidden');
