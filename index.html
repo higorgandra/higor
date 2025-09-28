@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Higor - Portfólio</title>
+    <!-- A SOLUÇÃO DEFINITIVA: Define o caminho base para todos os ficheiros -->
+    <base href="/higor/">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -169,7 +171,6 @@
 
     <script>
         var Module = {
-            // CORREÇÃO: Caminho explícito para o ficheiro .wasm
             wasmBinaryFile: 'particles.wasm', 
             onRuntimeInitialized: function() {
                 const canvas = document.getElementById('generative-art-canvas');
@@ -213,7 +214,6 @@
 
                 function animate() {
                     updateParticles();
-
                     const particleCount = getParticleCount();
                     const bufferOffset = getParticleBuffer();
                     const particleData = new Float32Array(Module.HEAPF32.buffer, bufferOffset, particleCount * 5);
@@ -232,7 +232,6 @@
                     }
                     
                     connect(particleData, particleCount);
-                    
                     animationFrameId = requestAnimationFrame(animate);
                 }
 
@@ -242,7 +241,6 @@
             }
         };
     </script>
-    <!-- CORREÇÃO: Caminho explícito para o ficheiro .js -->
     <script src="particles.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
@@ -254,6 +252,7 @@
             const closeModalBtn = document.getElementById('close-modal-btn');
             const modalTriggers = document.querySelectorAll('[data-modal-trigger]');
             let countdownInterval;
+            let loadingTimeout;
 
             modalTriggers.forEach(trigger => {
                 trigger.addEventListener('click', (event) => {
@@ -280,7 +279,7 @@
                         modalStatusText.textContent = 'Carregando...';
                         modalStatusText.classList.add('animate-pulse');
 
-                        let loadingTimeout = setTimeout(() => {
+                        loadingTimeout = setTimeout(() => {
                             modalStatusText.textContent = 'Aguarde...';
                         }, 4000);
 
@@ -324,6 +323,7 @@
             
             if (closeModalBtn) {
                 closeModalBtn.addEventListener('click', () => {
+                    clearTimeout(loadingTimeout);
                     clearInterval(countdownInterval);
                     modal.classList.add('hidden');
                     modal.classList.remove('flex');
