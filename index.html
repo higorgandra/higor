@@ -172,8 +172,9 @@
     <!-- A ORDEM DESTES SCRIPTS É CRUCIAL -->
     <script>
         // Define o objeto Module ANTES do script particles.js ser carregado.
-        // Isto garante que o script do Emscripten tenha um sítio para anexar as suas funções.
         var Module = {
+            // Adicionado para garantir que o ficheiro .wasm é encontrado.
+            wasmBinaryFile: './particles.wasm', 
             onRuntimeInitialized: function() {
                 // O WASM está pronto. Agora podemos chamar as funções C++.
                 const canvas = document.getElementById('generative-art-canvas');
@@ -370,4 +371,3 @@
     </script>
 </body>
 </html>
-
