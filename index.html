@@ -173,8 +173,8 @@
     <script>
         // Define o objeto Module ANTES do script particles.js ser carregado.
         var Module = {
-            // Adicionado para garantir que o ficheiro .wasm é encontrado.
-            wasmBinaryFile: './particles.wasm', 
+            // Alterado para um caminho mais simples e direto.
+            wasmBinaryFile: 'particles.wasm', 
             onRuntimeInitialized: function() {
                 // O WASM está pronto. Agora podemos chamar as funções C++.
                 const canvas = document.getElementById('generative-art-canvas');
@@ -256,7 +256,7 @@
             }
         };
     </script>
-    <script src="./particles.js"></script>
+    <script src="particles.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             // --- LÓGICA DOS MODAIS E BOTÃO (Independente do WASM) ---
@@ -371,3 +371,4 @@
     </script>
 </body>
 </html>
+
