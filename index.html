@@ -30,20 +30,17 @@
             background-color: rgba(0, 255, 149, 0.1);
         }
         
-        /* CORREÇÃO: Lógica do botão refatorada para ser mais robusta */
         #whatsapp-btn.counting-down {
             background-color: #00ff95;
-            color: #0a0a0a; /* Cor do fundo para contraste */
+            color: #0a0a0a;
             border-color: #00ff95;
         }
 
-        /* Estilos para o efeito de foco nos projetos */
         .project-item {
             transition: all 0.3s ease-in-out;
             border-color: rgba(255, 255, 255, 0.1);
         }
 
-        /* Aplica os efeitos de hover apenas em dispositivos que o suportam */
         @media (hover: hover) {
             .project-list:hover > .project-item {
                 opacity: 0.5;
@@ -59,11 +56,10 @@
             overflow: hidden;
         }
 
-        /* Estilos para o novo cabeçalho com Canvas */
         header {
             position: relative;
             z-index: 1;
-            overflow: hidden; /* Garante que as partículas não saem do header */
+            overflow: hidden;
         }
         #header-canvas-container {
             position: absolute;
@@ -72,8 +68,8 @@
             width: 100%;
             height: 100%;
             transform: translate(-50%, -50%);
-            z-index: -1; /* Coloca o canvas atrás do texto */
-            opacity: 0.3; /* Torna a animação subtil */
+            z-index: -1;
+            opacity: 0.3;
         }
         #generative-art-canvas {
             display: block;
@@ -86,7 +82,6 @@
 
     <main class="max-w-2xl w-full">
 
-        <!-- Cabeçalho Modificado com Animação C++/WASM -->
         <header class="pt-16 pb-24 text-center">
             <div id="header-canvas-container">
                  <canvas id="generative-art-canvas"></canvas>
@@ -94,10 +89,8 @@
             <h1 class="text-6xl md:text-8xl font-bold mb-4 tracking-tighter">Higor<span class="accent-color">.</span></h1>
         </header>
 
-        <!-- Seção de Projetos -->
         <section class="mb-24">
             <div class="space-y-8 project-list">
-                <!-- Projeto 1 -->
                 <div class="project-item text-left border border-color p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-2">Ela Consultoria e Treinamento</h3>
                     <p class="text-gray-400 mb-4 text-sm">Website institucional para empresa de consultoria.</p>
@@ -110,7 +103,6 @@
                     </div>
                     <a href="#" data-url="https://higorgandra.github.io/elaconsultoriaetreinamento" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
                 </div>
-                <!-- Projeto Guarderia Beira Mar -->
                 <div class="project-item text-left border border-color p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-2">Guarderia Beira Mar</h3>
                     <p class="text-gray-400 mb-4 text-sm">Sua escola de surf e náutica familiar.</p>
@@ -124,7 +116,6 @@
                     </div>
                     <a href="#" data-url="https://higorgandra.github.io/guarderiabeiramar" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Ver Site ↗</a>
                 </div>
-                <!-- Projeto Vídeo -->
                 <div class="project-item text-left border border-color p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-2">Barion Drift Salvador</h3>
                     <p class="text-gray-400 mb-4 text-sm">Show de drift e adrenalina no Barion Drift Bahia.</p>
@@ -136,7 +127,6 @@
                     </div>
                     <a href="#" data-url="#" data-modal-trigger class="font-semibold text-sm accent-color transition-colors duration-300 hover:text-white">Assistir Vídeo ↗</a>
                 </div>
-                <!-- Projeto Ferramenta de Otimização -->
                 <div class="project-item text-left border border-color p-6 rounded-lg">
                     <h3 class="text-xl font-bold mb-2">flmR - Bot Yourself</h3>
                     <p class="text-gray-400 mb-4 text-sm">Ferramenta de otimização 100% indetectável.</p>
@@ -152,7 +142,6 @@
             </div>
         </section>
 
-        <!-- Seção de Contato -->
         <section class="py-16 text-center">
             <h2 class="text-2xl font-bold mb-4">Pensado para ser diferente<span class="accent-color">.</span></h2>
             <p class="text-gray-400 max-w-sm mx-auto mb-8">Sua ideia, executada com precisão.</p>
@@ -162,7 +151,6 @@
         </section>
     </main>
 
-    <!-- Modal para visualização de projetos -->
     <div id="project-modal" class="fixed inset-0 bg-[#0a0a0a] flex-col items-center justify-center hidden z-50">
         <div class="w-full bg-[#111] p-3 flex justify-end items-center z-10">
              <button id="close-modal-btn" class="text-gray-400 hover:text-white transition-colors flex items-center">
@@ -179,20 +167,16 @@
         </div>
     </div>
 
-    <!-- A ORDEM DESTES SCRIPTS É CRUCIAL -->
     <script>
-        // Define o objeto Module ANTES do script particles.js ser carregado.
         var Module = {
-            // Alterado para um caminho mais simples e direto.
+            // CORREÇÃO: Caminho explícito para o ficheiro .wasm
             wasmBinaryFile: 'particles.wasm', 
             onRuntimeInitialized: function() {
-                // O WASM está pronto. Agora podemos chamar as funções C++.
                 const canvas = document.getElementById('generative-art-canvas');
                 if (!canvas) return;
                 const ctx = canvas.getContext('2d');
                 let animationFrameId;
 
-                // Liga as funções C++ exportadas a variáveis JavaScript para facilitar o uso.
                 const init = Module.cwrap('init', null, ['number', 'number']);
                 const updateParticles = Module.cwrap('update_particles', null, []);
                 const getParticleBuffer = Module.cwrap('get_particle_buffer', 'number', []);
@@ -202,7 +186,6 @@
                     const container = canvas.parentElement;
                     canvas.width = container.clientWidth;
                     canvas.height = container.clientHeight;
-                    // Chama a função init do C++ para (re)inicializar as partículas com o novo tamanho do canvas.
                     init(canvas.width, canvas.height);
                 }
 
@@ -229,20 +212,15 @@
                 }
 
                 function animate() {
-                    // 1. Pede ao C++ para atualizar as posições de todas as partículas (a parte pesada da computação).
                     updateParticles();
 
-                    // 2. Obtém os dados atualizados diretamente da memória do WASM.
                     const particleCount = getParticleCount();
                     const bufferOffset = getParticleBuffer();
-                    // Cria uma "vista" (view) para o buffer de memória do WASM, sem copiar dados, o que é muito eficiente.
                     const particleData = new Float32Array(Module.HEAPF32.buffer, bufferOffset, particleCount * 5);
                     
-                    // 3. Limpa o canvas e desenha as partículas (a parte de renderização, feita em JS).
                     ctx.clearRect(0, 0, canvas.width, canvas.height);
                     
                     for (let i = 0; i < particleCount; i++) {
-                        // Acede aos dados da partícula diretamente do buffer.
                         const x = particleData[i * 5];
                         const y = particleData[i * 5 + 1];
                         const size = particleData[i * 5 + 2];
@@ -253,10 +231,8 @@
                         ctx.fill();
                     }
                     
-                    // Desenha as linhas de conexão entre as partículas.
                     connect(particleData, particleCount);
                     
-                    // Continua o loop de animação.
                     animationFrameId = requestAnimationFrame(animate);
                 }
 
@@ -266,10 +242,10 @@
             }
         };
     </script>
+    <!-- CORREÇÃO: Caminho explícito para o ficheiro .js -->
     <script src="particles.js"></script>
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            // --- LÓGICA DOS MODAIS E BOTÃO (Independente do WASM) ---
             const modal = document.getElementById('project-modal');
             const iframe = document.getElementById('project-iframe');
             const videoElement = document.getElementById('project-video');
